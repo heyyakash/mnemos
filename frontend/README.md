@@ -1,29 +1,23 @@
-# Rsbuild Project
+# Rspack project
 
 ## Setup
 
 Install the dependencies:
 
 ```bash
-pnpm install
+npm install
 ```
 
-## Get Started
+## Get started
 
 Start the dev server:
 
 ```bash
-pnpm dev
+npm run dev
 ```
 
 Build the app for production:
 
 ```bash
-pnpm build
-```
-
-Preview the production build locally:
-
-```bash
-pnpm preview
+npm run build
 ```

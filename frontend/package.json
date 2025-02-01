@@ -1,24 +1,31 @@
 {
-  "name": "rsbuild-react-ts",
+  "name": "rspack-react-ts-starter",
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "dev": "rsbuild dev --open",
-    "build": "rsbuild build",
-    "preview": "rsbuild preview"
+    "dev": "cross-env NODE_ENV=development rspack serve",
+    "build": "cross-env NODE_ENV=production rspack build"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.0.2",
     "@tanstack/react-router": "^1.98.4",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "postcss": "^8.5.1",
+    "postcss-loader": "^8.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^4.0.2"
   },
   "devDependencies": {
-    "@rsbuild/core": "^1.1.8",
-    "@rsbuild/plugin-react": "^1.0.7",
+    "@rspack/cli": "^1.2.2",
+    "@rspack/core": "^1.2.2",
+    "@rspack/plugin-react-refresh": "1.0.0",
     "@tanstack/router-devtools": "^1.98.4",
     "@tanstack/router-plugin": "^1.98.6",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "cross-env": "^7.0.3",
+    "react-refresh": "^0.14.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   }
 }
