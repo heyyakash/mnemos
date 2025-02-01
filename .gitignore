@@ -1,0 +1,48 @@
+# Node.js (React Frontend)
+frontend/node_modules/
+frontend/build/
+frontend/.parcel-cache/
+frontend/.next/
+frontend/.nuxt/
+frontend/.turbo/
+frontend/.eslintcache
+frontend/.pnp/
+frontend/.pnp.js
+
+# Logs
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/.DS_Store
+
+# Spring Boot (Java Backend)
+backend/target/
+backend/.mvn/
+backend/.idea/
+backend/.project
+backend/.classpath
+backend/.settings/
+backend/.vscode/
+backend/logs/
+backend/*.log
+backend/*.iml
+backend/.DS_Store
+backend/.env
+
+# Global
+node_modules/
+*.log
+dist/
+.env
+debug.log
+*.swp
+*.swo
+*.swn
+.vscode/
+.DS_Store
+
