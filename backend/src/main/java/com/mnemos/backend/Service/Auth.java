@@ -13,9 +13,9 @@ import java.util.Optional;
 @Service
 public class Auth {
     @Autowired
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    private final JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public String signup(String email, String username, String password){
