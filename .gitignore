@@ -34,6 +34,10 @@ backend/*.iml
 backend/.DS_Store
 backend/.env
 
+# Ignore application properties
+backend/src/main/resources/application.properties
+backend/src/main/resources/application.yml
+
 # Global
 node_modules/
 *.log
