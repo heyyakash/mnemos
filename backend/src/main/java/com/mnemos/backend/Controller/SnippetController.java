@@ -26,4 +26,13 @@ public class SnippetController {
         return snippetService.getSnippetByEmail(request.get("email"));
     }
 
+    @PutMapping("/update/{id}")
+    public Snippet updateSnippet(@PathVariable Long id ,@RequestBody Map<String, String> request){
+        return snippetService.updateSnippet(id, request.get("title"), request.get("description"), request.get("code"), request.get("language"));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteSnippet(@PathVariable Long id){
+        return snippetService.deleteSnippet(id);
+    }
 }

@@ -11,6 +11,7 @@
 
     import java.lang.reflect.Type;
     import java.time.LocalDateTime;
+    import java.util.ArrayList;
     import java.util.HashMap;
     import java.util.List;
     import java.util.Map;
@@ -34,7 +35,7 @@
 
         @Column(columnDefinition = "JSONB")
         @JdbcTypeCode(SqlTypes.JSON)
-        private List<Map<String, Object>> history = List.of();
+        private List<Map<String, Object>> history = new ArrayList<>();
 
         private float[] vector;
 
@@ -43,24 +44,31 @@
 
         private String language;
 
-        private LocalDateTime updatedAt = LocalDateTime.now();
-        private LocalDateTime createdAt = LocalDateTime.now();
-        
+        private Long createdAt;
+        private Long updatedAt;
+
+        @PrePersist
+        protected void onCreate(){
+            long now = System.currentTimeMillis()/1000;
+            this.createdAt = now;
+            this.updatedAt = now;
+        }
+
 
         @PreUpdate
         public void onUpdate() throws JsonProcessingException {
+            System.out.println("In the onUpdate");
             Map<String, Object> oldVersion = Map.of(
-                    "title", this.title,
-                    "description", this.description,
                     "code", this.code,
                     "version", this.version,
                     "language", this.language,
                     "updatedAt", this.updatedAt
             );
-
+            System.out.println(oldVersion);
             history.add(oldVersion);
+            System.out.println(history);
             this.version+=1;
-            this.updatedAt = LocalDateTime.now();
+            this.updatedAt = System.currentTimeMillis() / 1000;
         }
         public long getId() {
             return id;
@@ -126,19 +134,19 @@
             this.version = version;
         }
 
-        public LocalDateTime getUpdatedAt() {
+        public Long getUpdatedAt() {
             return updatedAt;
         }
 
-        public void setUpdatedAt(LocalDateTime updatedAt) {
+        public void setUpdatedAt(Long updatedAt) {
             this.updatedAt = updatedAt;
         }
 
-        public LocalDateTime getCreatedAt() {
+        public Long getCreatedAt() {
             return createdAt;
         }
 
-        public void setCreatedAt(LocalDateTime createdAt) {
+        public void setCreatedAt(Long createdAt) {
             this.createdAt = createdAt;
         }
 

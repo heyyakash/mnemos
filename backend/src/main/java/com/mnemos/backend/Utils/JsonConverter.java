@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Converter(autoApply = true)
+@Converter(autoApply = false)
 public class JsonConverter implements AttributeConverter<List<Map<String, Object>>, String> {
     private static final ObjectMapper objectmapper = new ObjectMapper();
     @Override
