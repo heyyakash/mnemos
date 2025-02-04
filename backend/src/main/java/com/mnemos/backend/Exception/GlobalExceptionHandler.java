@@ -26,6 +26,12 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.BAD_REQUEST,  ex.getMessage());
     }
 
+    @ExceptionHandler(InternalServerErrorException.class)
+    public ResponseEntity<Map<String, Object>> handleInternalServerErrorException(InternalServerErrorException ex) {
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,  ex.getMessage());
+    }
+
+
     private ResponseEntity<Map<String, Object>> buildErrorResponse(HttpStatus httpStatus, String message){
         Map<String,Object> errorResponse = new HashMap<>();
         errorResponse.put("status", httpStatus.value());

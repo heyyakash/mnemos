@@ -1,7 +1,7 @@
 package com.mnemos.backend.Controller;
 
 import com.mnemos.backend.Service.AuthService;
-import lombok.AllArgsConstructor;
+import com.mnemos.backend.Service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +12,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("auth")
-@AllArgsConstructor
+
+
 public class AuthController {
     @Autowired
     private AuthService authService;
