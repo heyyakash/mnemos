@@ -28,6 +28,7 @@ import { toast } from 'sonner'
 import { HTTPRequest } from '@/api/api'
 import { useRouter } from 'next/navigation'
 
+
 const SignUp = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -45,7 +46,10 @@ const SignUp = () => {
             password:values.password
         }
         const res = await HTTPRequest("/auth/signup", {
-            body: JSON.stringify(payload)
+            body: JSON.stringify(payload),
+            headers:{
+                "Content-Type":"application/json",
+            }
         },"POST")
         
         if(res?.response.success){
