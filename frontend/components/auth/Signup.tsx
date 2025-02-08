@@ -26,7 +26,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { toast } from 'sonner'
 import { HTTPRequest } from '@/api/api'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 
 
 const SignUp = () => {
@@ -37,7 +37,7 @@ const SignUp = () => {
             password: ""
         },
     })
-    const router = useRouter()
+    // const router = useRouter()
     
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const payload = {

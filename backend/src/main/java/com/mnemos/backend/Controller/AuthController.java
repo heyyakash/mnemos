@@ -2,7 +2,9 @@ package com.mnemos.backend.Controller;
 
 import com.mnemos.backend.Service.AuthService;
 import com.mnemos.backend.Service.AuthService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +21,12 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public String signup(@RequestBody Map<String, String> request){
-        return authService.signup(request.get("email"), request.get("password"));
+    public ResponseEntity<?> signup(@RequestBody Map<String, String> request, HttpServletResponse httpServletResponse){
+        return authService.signup(request.get("email"), request.get("password"), httpServletResponse);
     }
 
     @PostMapping("/signin")
-    public String signin(@RequestBody Map<String, String> request){
-        return authService.signin(request.get("email"), request.get("password"));
+    public String signin(@RequestBody Map<String, String> request, HttpServletResponse httpServletResponse){
+        return authService.signin(request.get("email"), request.get("password"), httpServletResponse);
     }
 }

@@ -7,10 +7,16 @@ import com.mnemos.backend.Exception.UserAlreadyException;
 import com.mnemos.backend.Exception.UserNotFoundException;
 import com.mnemos.backend.Repository.UserRepository;
 import com.mnemos.backend.Security.JwtUtil;
+import com.mnemos.backend.Utils.ResponseGenerator;
+import com.mnemos.backend.Utils.SetCookie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseCookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.Optional;
 
@@ -22,7 +28,7 @@ public class AuthService {
     private JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public String signup(String email, String password){
+    public ResponseEntity<?> signup(String email, String password, HttpServletResponse httpServletResponse){
         if(userRepository.findUserByEmail(email).isPresent()){
             throw new BadRequestException("User Already Exists!");
         }
@@ -30,10 +36,14 @@ public class AuthService {
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
-        return "Account Created Successfully";
+        ResponseCookie jwtCookie = SetCookie.CreateCookie("token",jwtUtil.generateToken(user.getId().toString()));
+        ResponseCookie jwtRefreshCookie = SetCookie.CreateCookie("refreshtoken",jwtUtil.generateRefreshToken(user.getId().toString()));
+        httpServletResponse.addHeader("Set-Cookie", jwtCookie.toString());
+        httpServletResponse.addHeader("Set-Cookie", jwtRefreshCookie.toString());
+        return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, "Account Created Succesfully", true));
     }
 
-    public String signin(String email, String password){
+    public String signin(String email, String password, HttpServletResponse httpServletResponse){
         Optional<User> user = userRepository.findUserByEmail(email);
         if(user.isEmpty()){
             throw new NotFoundException("User Not Found");
