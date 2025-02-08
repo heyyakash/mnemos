@@ -22,7 +22,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody Map<String, String> request, HttpServletResponse httpServletResponse){
-        return authService.signup(request.get("email"), request.get("password"), httpServletResponse);
+        return authService.signup(request.get("firstname"),request.get("lastname"),request.get("email"), request.get("password"), httpServletResponse);
     }
 
     @PostMapping("/signin")
