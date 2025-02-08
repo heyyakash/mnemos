@@ -11,19 +11,16 @@
 
     import java.lang.reflect.Type;
     import java.time.LocalDateTime;
-    import java.util.ArrayList;
-    import java.util.HashMap;
-    import java.util.List;
-    import java.util.Map;
+    import java.util.*;
 
     @Entity
     @Table(name = "snippets")
     public class Snippet {
 
-
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private long id;
+        @GeneratedValue(strategy = GenerationType.UUID)
+        @Column(nullable = false, updatable = false)
+        private UUID id;
 
         private String title;
         private String description;
@@ -39,7 +36,7 @@
 
         private float[] vector;
 
-        private String email;
+        private String uid;
 
 
         private String language;
@@ -70,11 +67,11 @@
             this.version+=1;
             this.updatedAt = System.currentTimeMillis() / 1000;
         }
-        public long getId() {
+        public UUID getId() {
             return id;
         }
 
-        public void setId(long id) {
+        public void setId(UUID id) {
             this.id = id;
         }
 
@@ -110,12 +107,12 @@
             this.vector = vector;
         }
 
-        public String getEmail() {
-            return email;
+        public String getUid() {
+            return uid;
         }
 
-        public void setEmail(String email) {
-            this.email = email;
+        public void setUid(String uid) {
+            this.uid = uid;
         }
 
         public String getLanguage() {

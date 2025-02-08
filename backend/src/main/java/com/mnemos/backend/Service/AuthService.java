@@ -22,13 +22,12 @@ public class AuthService {
     private JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public String signup(String email, String username, String password){
+    public String signup(String email, String password){
         if(userRepository.findUserByEmail(email).isPresent()){
             throw new BadRequestException("User Already Exists!");
         }
         User user = new User();
         user.setEmail(email);
-        user.setUsername(email);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
         return "Account Created Successfully";
@@ -42,7 +41,7 @@ public class AuthService {
         if (!passwordEncoder.matches(password, user.get().getPassword())){
             throw new BadRequestException("Wrong Credentials");
         }
-        return jwtUtil.generateToken(user.get().getEmail());
+        return jwtUtil.generateToken(user.get().getId().toString());
 
     }
 }

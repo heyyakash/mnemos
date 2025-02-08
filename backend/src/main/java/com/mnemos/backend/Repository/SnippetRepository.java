@@ -7,11 +7,12 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-public interface SnippetRepository extends JpaRepository<Snippet, Long> {
-    @Query(value = "SELECT * FROM snippets WHERE email = :email ORDER BY vector <-> :queryVector LIMIT 5", nativeQuery = true)
-    List<Snippet> findSimilarSnippets(@Param("email") String email, @Param("queryVector") float[] queryVector);
+public interface SnippetRepository extends JpaRepository<Snippet, UUID> {
+    @Query(value = "SELECT * FROM snippets WHERE uid = :uid ORDER BY vector <-> :queryVector LIMIT 5", nativeQuery = true)
+    List<Snippet> findSimilarSnippets(@Param("uid") String uid, @Param("queryVector") float[] queryVector);
 
-    Optional<Snippet[]> findSnippetByEmail(String email);
+    Optional<Snippet[]> findSnippetByUid(String uid);
 
 }

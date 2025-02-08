@@ -10,8 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class SnippetService {
@@ -21,11 +21,11 @@ public class SnippetService {
     @Autowired
     private ResponseGenerator responseGenerator;
 
-    public ResponseEntity<?> addSnippet(String title, String description, String email, String code, String language){
+    public ResponseEntity<?> addSnippet(String title, String description, String uid, String code, String language){
         try {
             Snippet snippet = new Snippet();
             snippet.setCode(code);
-            snippet.setEmail(email);
+            snippet.setUid(uid);
             snippet.setDescription(description);
             snippet.setTitle(title);
             snippet.setLanguage(language);
@@ -38,15 +38,15 @@ public class SnippetService {
         }
     }
 
-    public Snippet[] getSnippetByEmail(String email){
-        Optional<Snippet[]> snippets = snippetRepository.findSnippetByEmail(email);
+    public Snippet[] getSnippetsByUid(String email){
+        Optional<Snippet[]> snippets = snippetRepository.findSnippetByUid(email);
         if (snippets.isEmpty()){
             throw new NotFoundException("No Snippets found");
         }
         return snippets.get().clone();
     }
 
-    public Snippet updateSnippet(Long id, String title, String description, String email, String language){
+    public Snippet updateSnippet(UUID id, String title, String description, String code, String language){
         Optional<Snippet> snippet = snippetRepository.findById(id);
         if(snippet.isEmpty()){
             throw new NotFoundException("Snippet does not exist");
@@ -54,12 +54,12 @@ public class SnippetService {
         Snippet oldSnip = snippet.get();
         oldSnip.setTitle(title);
         oldSnip.setDescription(description);
-        oldSnip.setEmail(email);
+        oldSnip.setCode(code);
         oldSnip.setLanguage(language);
         return snippetRepository.save(oldSnip);
     }
 
-    public ResponseEntity<?> deleteSnippet(Long id){
+    public ResponseEntity<?> deleteSnippet(UUID id){
         Optional<Snippet> snippet = snippetRepository.findById(id);
         if(snippet.isEmpty()){
             throw new NotFoundException("Snippet does not exist");

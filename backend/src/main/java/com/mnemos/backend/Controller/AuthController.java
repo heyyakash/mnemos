@@ -20,7 +20,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public String signup(@RequestBody Map<String, String> request){
-        return authService.signup(request.get("email"), request.get("username"), request.get("password"));
+        return authService.signup(request.get("email"), request.get("password"));
     }
 
     @PostMapping("/signin")

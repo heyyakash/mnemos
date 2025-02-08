@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class JwtUtil {
@@ -22,16 +23,16 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(String email){
+    public String generateToken(String uid){
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(uid)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String extractEmail(String token){
+    public String extractUid(String token){
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
@@ -40,8 +41,8 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    public boolean validateToken(String token, String email){
-        return (email.equals(extractEmail(token)) && !isTokenExpired(token));
+    public boolean validateToken(String token, String uid){
+        return (uid.equals(extractUid(token)) && !isTokenExpired(token));
     }
 
     private boolean isTokenExpired(String token){

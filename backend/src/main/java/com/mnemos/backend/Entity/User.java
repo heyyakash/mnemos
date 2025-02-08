@@ -3,22 +3,24 @@ package com.mnemos.backend.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(nullable = false, unique = true)
-    private String username;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false, updatable = false)
+    private UUID id;
 
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String password;
+
+    private boolean verified = false;
 
     public String getEmail(){
         return this.email;
@@ -28,14 +30,27 @@ public class User {
         return this.password;
     }
 
-    public void setUsername(String username){
-        this.username = username;
-    }
     public void setEmail(String email){
         this.email = email;
     }
 
     public void setPassword(String password){
         this.password = password;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 }
