@@ -7,6 +7,8 @@ import * as z from "zod"
 
 
 const formSchema = z.object({
+    firstname: z.string().min(1).max(50),
+    lastname: z.string().min(1).max(50),
     email: z.string().min(2, {
         message: "Length of email address should be greater than 2"
     }),
@@ -33,6 +35,8 @@ const SignUp = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            firstname:"",
+            lastname:"",
             email: "",
             password: ""
         },
@@ -41,8 +45,9 @@ const SignUp = () => {
     
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const payload = {
+            firstname:values.firstname,
+            lastname: values.lastname,
             email:values.email,
-
             password:values.password
         }
         const res = await HTTPRequest("/auth/signup", {
@@ -56,6 +61,8 @@ const SignUp = () => {
             console.log(res.response)
             toast.success("You have signed up successfully!!")
             form.reset({
+                firstname:"",
+                lastname:"",
                 email:"",
                 password:""
             })
@@ -75,6 +82,34 @@ const SignUp = () => {
                     <p className="text-lg text-white/50 text-center mt-3">Enter your email and password to sign up</p>
                 </div>
 
+
+                <FormField
+                    control={form.control}
+                    name="firstname"
+                    render={({ field }) => (
+                        <FormItem className='mt-4'>
+                            <FormLabel className="">Firstname</FormLabel>
+                            <FormControl>
+                                <Input className="input-primary h-[40px] text-[1rem]" type="text" placeholder="John" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="lastname"
+                    render={({ field }) => (
+                        <FormItem className='mt-4'>
+                            <FormLabel className="">Lastname</FormLabel>
+                            <FormControl>
+                                <Input className="input-primary h-[40px] text-[1rem]" type="text" placeholder="Doe" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
                 <FormField
                     control={form.control}

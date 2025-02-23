@@ -44,6 +44,10 @@
         private Long createdAt;
         private Long updatedAt;
 
+        private Boolean isBoolean = false;
+
+        private List<UUID> labels = new ArrayList<>();
+
         @PrePersist
         protected void onCreate(){
             long now = System.currentTimeMillis()/1000;
@@ -153,5 +157,21 @@
 
         public void setHistory(List<Map<String, Object>> history) {
             this.history = history;
+        }
+
+        public Boolean getBoolean() {
+            return isBoolean;
+        }
+
+        public void setBoolean(Boolean aBoolean) {
+            isBoolean = aBoolean;
+        }
+
+        public List<UUID> getLabels() {
+            return labels;
+        }
+
+        public void setLabels(List<UUID> labels) {
+            this.labels = labels;
         }
     }

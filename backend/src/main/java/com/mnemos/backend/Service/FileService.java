@@ -18,10 +18,11 @@ public class FileService {
     @Autowired
     private FileRepository fileRepository;
 
-    public ResponseEntity<?> CreateFolder(String name, UUID parent_id, User user){
+    public ResponseEntity<?> CreateFolder(String name, UUID parent_id, User user,boolean isRoot){
         File folder = new File();
         folder.setName(name);
         folder.setFolder(true);
+        folder.setRoot(isRoot);
         folder.setParent(parent_id!=null? fileRepository.findById(parent_id).orElse(null): null);
         folder.setOwner(user);
         fileRepository.save(folder);

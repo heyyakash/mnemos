@@ -50,7 +50,7 @@ public class AuthService {
         ResponseCookie jwtRefreshCookie = SetCookie.CreateCookie("refreshtoken",jwtUtil.generateRefreshToken(user.getId().toString()));
 
         //create a new folder
-        fileService.CreateFolder(user.getFirstname() + "'s", null, user);
+        fileService.CreateFolder(user.getFirstname() + "'s", null, user, true);
 
 
         //send cookie

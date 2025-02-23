@@ -20,6 +20,9 @@ public class File {
     @Column(nullable = false)
     private Boolean isFolder;
 
+    @Column(nullable = false)
+    private Boolean isRoot;
+
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -98,5 +101,13 @@ public class File {
 
     public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Boolean getRoot() {
+        return isRoot;
+    }
+
+    public void setRoot(Boolean root) {
+        isRoot = root;
     }
 }
