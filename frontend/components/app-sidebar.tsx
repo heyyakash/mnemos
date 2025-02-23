@@ -47,7 +47,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="p-4 flex items-center flex-row gap-4 border-b-2">
+      <SidebarHeader className="p-4 flex items-center h-[80] flex-row gap-4 border-b-2">
         <div className="w-[50px] h-full bg-secondary flex items-center text-xl justify-center rounded-md">
           AS
         </div>
