@@ -1,13 +1,13 @@
 import React from "react";
 import Files from "./Files";
-import Content from "./Content";
+import Viewer from "./Viewer";
 
 
 const Main = () => {
   return (
     <div className="grid grid-cols-3  w-full">
         <Files />
-        <Content />
+        <Viewer />
     </div>
   );
 };

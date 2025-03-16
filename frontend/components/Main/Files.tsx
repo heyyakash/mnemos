@@ -15,9 +15,12 @@ import {
 } from "@/components/ui/table";
 
 import { LayoutGrid, List } from "lucide-react";
+import { useAtom } from "jotai";
+import editorModeAtom from "@/atoms/editorMode.atom";
 
 const Files = () => {
   const [mode, setMode] = useState<"list" | "grid">("list");
+  const [, setEditorMode] = useAtom(editorModeAtom)
   return (
     <div className="col-span-1  border-r-2">
       <div className="p-4 flex items-center h-[80px] flex-row gap-4 border-b-2">
@@ -44,14 +47,17 @@ const Files = () => {
             </div>
           </div>
         </div>
+
+            <div onClick={()=>setEditorMode(true)} className="w-7 h-7 rounded-full text-2xl cursor-pointer hover:bg-secondary hover:text-primary font-semibold flex-hard-center self-center bg-primary text-secondary">
+               +
+            </div>
+
       </div>
       <div
         className={`${
           mode === "grid" ? "grid gap-2 grid-cols-4" : " flex flex-col gap-2"
         } p-2`}
       >
-        {/* <FileCard mode = {mode} title="PSQL login snippet" language="Bash" type="file" />
-        <FileCard mode = {mode} title="Docker snippets" type="folder" /> */}
         <Table>
           <TableCaption>A list of your files</TableCaption>
           <TableHeader>

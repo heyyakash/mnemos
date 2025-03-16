@@ -1,3 +1,4 @@
+"use client";
 import { Braces, Folder } from "lucide-react";
 import React, { FC } from "react";
 import { Badge } from "../ui/badge";
@@ -25,7 +26,7 @@ const FileCard: FC<props> = ({ type, title, language,description, mode }) => {
           </div>
 
           <div className="mt-3 flex gap-2 ">
-            <Badge className="self-start">CLI</Badge>
+            <Badge className="self-start">CL</Badge>
             <Badge className="self-start">Bash</Badge>
           </div>
         </div>
@@ -33,9 +34,9 @@ const FileCard: FC<props> = ({ type, title, language,description, mode }) => {
     );
   }
   return (
-    <TableRow>
+    <TableRow className="cursor-pointer">
       <TableCell className="font-medium">
-        {type === "folder" ? <Folder className="text-xs text-orange-500 h-4" /> : <Braces className="text-xs text-orange-500 h-4" />}
+        {type === "folder" ? <Folder className="text-xs text-orange-500 h-4" /> : <Braces className="text-xs text-blue-500 h-4" />}
       </TableCell>
       <TableCell>{title}</TableCell>
       <TableCell className="max-w-[20ch] truncate">
