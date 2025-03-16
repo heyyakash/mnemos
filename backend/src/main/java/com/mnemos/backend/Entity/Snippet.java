@@ -40,6 +40,8 @@
 
 
         private String language;
+        private Boolean isArchived = false;
+
 
         private Long createdAt;
         private Long updatedAt;
@@ -174,4 +176,13 @@
         public void setLabels(List<UUID> labels) {
             this.labels = labels;
         }
+
+        public Boolean getArchived() {
+            return isArchived;
+        }
+
+        public void setArchived(Boolean archived) {
+            isArchived = archived;
+        }
+
     }

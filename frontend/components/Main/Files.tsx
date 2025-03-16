@@ -4,6 +4,16 @@ import React, { useState } from "react";
 import { SidebarTrigger } from "../ui/sidebar";
 import { Separator } from "../ui/separator";
 import FileCard from "./FileCard";
+
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 import { LayoutGrid, List } from "lucide-react";
 
 const Files = () => {
@@ -35,9 +45,32 @@ const Files = () => {
           </div>
         </div>
       </div>
-      <div className={`${mode === "grid"? "grid gap-2 grid-cols-4":" flex flex-col gap-2"} p-2`}>
-        <FileCard mode = {mode} title="PSQL login snippet" language="Bash" type="file" />
-        <FileCard mode = {mode} title="Docker snippets" type="folder" />
+      <div
+        className={`${
+          mode === "grid" ? "grid gap-2 grid-cols-4" : " flex flex-col gap-2"
+        } p-2`}
+      >
+        {/* <FileCard mode = {mode} title="PSQL login snippet" language="Bash" type="file" />
+        <FileCard mode = {mode} title="Docker snippets" type="folder" /> */}
+        <Table>
+          <TableCaption>A list of your files</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead></TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Language</TableHead>
+              <TableHead className="text-right">Created At</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+
+                <FileCard mode={mode} title="Postgres commands" type="file" description="Postgres run docker command" language="bash" updatedAt="" />
+                <FileCard mode={mode} title="Docker commands" type="folder" description="handy docker commands" language="" updatedAt="" />
+
+  
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
