@@ -74,21 +74,21 @@ const CreateNew = () => {
             control={form.control}
             name="language"
             render={({ field }) => (
-              <FormItem className="flex flex-col mt-2">
-                <FormLabel>Email</FormLabel>
+              <FormItem className="flex flex-col mt-3">
+                <FormLabel>Language</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a verified email to display" />
+                      <SelectValue placeholder="Select a language" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     {languages.map((l,i)=>{
-                        return <SelectItem key = {i} value={l}>{l}</SelectItem>
-                    })}s
+                        return <SelectItem className="capitalize" key = {i} value={l}>{l}</SelectItem>
+                    })}
                   </SelectContent>
                 </Select>
                 <FormMessage />
