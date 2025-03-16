@@ -17,10 +17,12 @@ import {
 import { LayoutGrid, List } from "lucide-react";
 import { useAtom } from "jotai";
 import editorModeAtom from "@/atoms/editorMode.atom";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import CreateNew from "./CreateNew";
 
 const Files = () => {
   const [mode, setMode] = useState<"list" | "grid">("list");
-  const [, setEditorMode] = useAtom(editorModeAtom)
+  const [, setEditorMode] = useAtom(editorModeAtom);
   return (
     <div className="col-span-1  border-r-2">
       <div className="p-4 flex items-center h-[80px] flex-row gap-4 border-b-2">
@@ -48,10 +50,19 @@ const Files = () => {
           </div>
         </div>
 
-            <div onClick={()=>setEditorMode(true)} className="w-7 h-7 rounded-full text-2xl cursor-pointer hover:bg-secondary hover:text-primary font-semibold flex-hard-center self-center bg-primary text-secondary">
-               +
+        <Sheet>
+          <SheetTrigger asChild>
+            <div
+              onClick={() => setEditorMode(true)}
+              className="w-7 h-7 rounded-full text-2xl cursor-pointer hover:bg-secondary hover:text-primary font-semibold flex-hard-center self-center bg-primary text-secondary"
+            >
+              +
             </div>
-
+          </SheetTrigger>
+          <SheetContent className="w-[600px]">
+            <CreateNew />
+          </SheetContent>
+        </Sheet>
       </div>
       <div
         className={`${
@@ -70,11 +81,22 @@ const Files = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-
-                <FileCard mode={mode} title="Postgres commands" type="file" description="Postgres run docker command" language="bash" updatedAt="" />
-                <FileCard mode={mode} title="Docker commands" type="folder" description="handy docker commands" language="" updatedAt="" />
-
-  
+            <FileCard
+              mode={mode}
+              title="Postgres commands"
+              type="file"
+              description="Postgres run docker command"
+              language="bash"
+              updatedAt=""
+            />
+            <FileCard
+              mode={mode}
+              title="Docker commands"
+              type="folder"
+              description="handy docker commands"
+              language=""
+              updatedAt=""
+            />
           </TableBody>
         </Table>
       </div>
