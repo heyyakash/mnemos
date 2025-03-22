@@ -6,13 +6,10 @@ import com.mnemos.backend.Exception.StatusFoundException;
 import com.mnemos.backend.Security.JwtUtil;
 import com.mnemos.backend.Utils.CookieUtils;
 import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -23,13 +20,10 @@ public class AuthenticatedFilter implements HandlerInterceptor {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)  throws IOException {
         String token = CookieUtils.getCookie(request, "token");
-
 
         if(token == null || token.isEmpty()){
             deleteToken(response);
