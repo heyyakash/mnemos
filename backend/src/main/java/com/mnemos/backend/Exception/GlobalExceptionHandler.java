@@ -31,6 +31,11 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,  ex.getMessage());
     }
 
+    @ExceptionHandler(StatusFoundException.class)
+    public ResponseEntity<Map<String, Object>> handdleStatusFoundError(InternalServerErrorException ex) {
+        return buildErrorResponse(HttpStatus.FOUND,  ex.getMessage());
+    }
+
 
     private ResponseEntity<Map<String, Object>> buildErrorResponse(HttpStatus httpStatus, String message){
         Map<String,Object> errorResponse = new HashMap<>();

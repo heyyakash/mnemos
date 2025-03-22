@@ -3,13 +3,10 @@ package com.mnemos.backend.Service;
 import com.mnemos.backend.Entity.User;
 import com.mnemos.backend.Exception.BadRequestException;
 import com.mnemos.backend.Exception.NotFoundException;
-import com.mnemos.backend.Exception.UserAlreadyException;
-import com.mnemos.backend.Exception.UserNotFoundException;
-import com.mnemos.backend.Repository.FileRepository;
 import com.mnemos.backend.Repository.UserRepository;
 import com.mnemos.backend.Security.JwtUtil;
 import com.mnemos.backend.Utils.ResponseGenerator;
-import com.mnemos.backend.Utils.SetCookie;
+import com.mnemos.backend.Utils.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.http.ResponseCookie;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -46,8 +44,8 @@ public class AuthService {
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
-        ResponseCookie jwtCookie = SetCookie.CreateCookie("token",jwtUtil.generateToken(user.getId().toString()));
-        ResponseCookie jwtRefreshCookie = SetCookie.CreateCookie("refreshtoken",jwtUtil.generateRefreshToken(user.getId().toString()));
+        ResponseCookie jwtCookie = CookieUtils.CreateCookie("token",jwtUtil.generateToken(user.getId().toString(), "auth"));
+        ResponseCookie jwtRefreshCookie = CookieUtils.CreateCookie("refreshtoken",jwtUtil.generateRefreshToken(user.getId().toString(), "auth"));
 
         //create a new folder
         fileService.CreateFolder(user.getFirstname() + "'s", null, user, true);
@@ -61,7 +59,7 @@ public class AuthService {
         return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, "Account Created Succesfully", true));
     }
 
-    public String signin(String email, String password, HttpServletResponse httpServletResponse){
+    public ResponseEntity<?> signin(String email, String password, HttpServletResponse httpServletResponse){
         Optional<User> user = userRepository.findUserByEmail(email);
         if(user.isEmpty()){
             throw new NotFoundException("User Not Found");
@@ -69,7 +67,12 @@ public class AuthService {
         if (!passwordEncoder.matches(password, user.get().getPassword())){
             throw new BadRequestException("Wrong Credentials");
         }
-        return jwtUtil.generateToken(user.get().getId().toString());
+        ResponseCookie jwtCookie = CookieUtils.CreateCookie("token",jwtUtil.generateToken(user.get().getId().toString(),"auth"));
+        ResponseCookie jwtRefreshCookie = CookieUtils.CreateCookie("refreshtoken",jwtUtil.generateRefreshToken(user.get().getId().toString(),"auth"));
 
+        httpServletResponse.addHeader("Set-Cookie", jwtCookie.toString());
+        httpServletResponse.addHeader("Set-Cookie", jwtRefreshCookie.toString());
+
+        return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, "Logged in successfully", true));
     }
 }

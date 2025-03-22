@@ -26,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public String signin(@RequestBody Map<String, String> request, HttpServletResponse httpServletResponse){
+    public ResponseEntity<?> signin(@RequestBody Map<String, String> request, HttpServletResponse httpServletResponse){
         return authService.signin(request.get("email"), request.get("password"), httpServletResponse);
     }
 }

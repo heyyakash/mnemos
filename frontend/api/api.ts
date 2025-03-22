@@ -25,7 +25,7 @@ export async function HTTPRequest(
         })
         if(redirect){
             if (req.status === 302) {
-                Router.push('/login')
+                Router.push('/auth')
                 return null
             }
             if (req.status === 404) {
