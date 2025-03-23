@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Component
 public class ResponseGenerator {
-    public static Map<String, Object> generateResponse(HttpStatus status, String message, boolean success){
+    public static Map<String, Object> generateResponse(HttpStatus status, Object message, boolean success){
         Map<String, Object> resp = new HashMap<>();
         resp.put("status", status.value());
         resp.put("message", message);

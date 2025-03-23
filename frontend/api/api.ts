@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Router from "next/router"
+// import Router from "next/router"
 
 
 export interface responseInterface {
@@ -24,14 +24,14 @@ export async function HTTPRequest(
             ...options
         })
         if(redirect){
-            if (req.status === 302) {
-                Router.push('/auth')
-                return null
-            }
-            if (req.status === 404) {
-                Router.push('/notfound')
-                return null
-            }
+            // if (req.status === 302) {
+            //     Router.push('/auth')
+            //     return null
+            // }
+            // if (req.status === 404) {
+            //     Router.push('/notfound')
+            //     return null
+            // }
         }
         const result = await req.json()
         return {

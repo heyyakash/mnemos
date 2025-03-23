@@ -28,7 +28,6 @@ public class AuthenticatedFilter implements HandlerInterceptor {
         if(token == null || token.isEmpty()){
             deleteToken(response);
             throw new StatusFoundException("No Token");
-
         }
 
         try{
@@ -72,6 +71,7 @@ public class AuthenticatedFilter implements HandlerInterceptor {
 
         } catch (Exception e) {
             deleteToken(response);
+            System.out.println(e.getMessage());
             throw new StatusFoundException("Error in parsing JWT");
 
         }

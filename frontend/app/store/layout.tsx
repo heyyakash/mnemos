@@ -1,6 +1,7 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import Main from "@/components/Main/main";
 import { SidebarProvider } from "@/components/ui/sidebar";
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -20,7 +21,6 @@ export default function AuthLayout({
         {children}
         <Main />
       </SidebarProvider>
-  
     </>
   );
 }

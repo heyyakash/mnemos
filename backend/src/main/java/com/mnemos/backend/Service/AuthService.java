@@ -75,4 +75,10 @@ public class AuthService {
 
         return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, "Logged in successfully", true));
     }
+
+    public ResponseEntity<?> signout(HttpServletResponse response) {
+        CookieUtils.deleteCookie(response, "token");
+        CookieUtils.deleteCookie(response, "refreshtoken");
+        return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, "Logged out successfully", true));
+    }
 }

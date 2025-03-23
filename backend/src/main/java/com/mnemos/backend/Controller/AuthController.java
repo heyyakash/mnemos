@@ -14,8 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("auth")
-
-
 public class AuthController {
     @Autowired
     private AuthService authService;
@@ -28,5 +26,10 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody Map<String, String> request, HttpServletResponse httpServletResponse){
         return authService.signin(request.get("email"), request.get("password"), httpServletResponse);
+    }
+
+    @PostMapping("/signout")
+    public  ResponseEntity<?> signout(HttpServletResponse response){
+        return authService.signout(response);
     }
 }

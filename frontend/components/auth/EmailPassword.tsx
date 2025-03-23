@@ -47,7 +47,7 @@ const EmailPassword = () => {
       "POST"
     );
     if (res?.response.success) {
-      toast.success("Logged In successfully");
+      toast.success(res.response.message);
       router.push("/store");
     } else {
       toast.error(res?.response.message);
