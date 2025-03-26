@@ -18,7 +18,6 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity<?> getUserDetails(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("Entered User controller");
         return userService.getUserDetails(request, response);
     }
 

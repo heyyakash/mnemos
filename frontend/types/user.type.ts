@@ -3,6 +3,7 @@ export interface User {
     firstname: string
     lastname: string
     email: string
+    rootFolder: string
     verified: boolean
   }
   

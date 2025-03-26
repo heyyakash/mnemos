@@ -1,5 +1,6 @@
 package com.mnemos.backend.Exception;
 
+import com.mnemos.backend.Utils.ResponseGenerator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,18 +33,16 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(StatusFoundException.class)
-    public ResponseEntity<Map<String, Object>> handdleStatusFoundError(InternalServerErrorException ex) {
+    public ResponseEntity<Map<String, Object>> handleStatusFoundError(StatusFoundException ex) {
         return buildErrorResponse(HttpStatus.FOUND,  ex.getMessage());
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<Map<String, Object>> handleUnauthorizedException(UnauthorizedException ex) {
+        return buildErrorResponse(HttpStatus.UNAUTHORIZED,  ex.getMessage());
+    }
 
     private ResponseEntity<Map<String, Object>> buildErrorResponse(HttpStatus httpStatus, String message){
-        Map<String,Object> errorResponse = new HashMap<>();
-        errorResponse.put("status", httpStatus.value());
-        errorResponse.put("success", false);
-        errorResponse.put("message", message);
-        errorResponse.put("timestamp", LocalDateTime.now());
-
-        return new ResponseEntity<>(errorResponse, httpStatus);
+        return ResponseEntity.status(httpStatus).body(ResponseGenerator.generateResponse(httpStatus, message, false));
     }
 }

@@ -31,7 +31,7 @@ const FormSchema = z.object({
   snippet: z.string({ required_error: "Snippet required" }),
 });
 
-const CreateNew = () => {
+const CreateNewFile = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -101,4 +101,4 @@ const CreateNew = () => {
   );
 };
 
-export default CreateNew;
+export default CreateNewFile;

@@ -29,24 +29,25 @@ public class AuthenticatedFilter implements HandlerInterceptor {
             deleteToken(response);
             throw new StatusFoundException("No Token");
         }
-
+        Claims claims;
         try{
-            Claims claims = jwtUtil.decodeJWT(token);
             boolean expired = jwtUtil.isTokenExpired(token);
+            if(!expired){
+                claims =  jwtUtil.decodeJWT(token);
+                if(!"auth".equals(claims.get("type"))){
+                    deleteToken(response);
+                    throw new StatusFoundException("Omnious token");
+                }
 
-            if(!"auth".equals(claims.get("type"))){
-                deleteToken(response);
-                throw new StatusFoundException("Omnious token");
-            }
+            }else{
 
-            if(expired){
+                System.out.println("Expired Token : " + token);
                 String refreshToken = CookieUtils.getCookie(request, "refreshtoken");
                 if(refreshToken == null || refreshToken.isEmpty() || jwtUtil.isTokenExpired(refreshToken)){
                     deleteToken(response);
                     throw new StatusFoundException("Session Expired");
 
                 }
-
                 Claims refreshTokenClaims = jwtUtil.decodeJWT(refreshToken);
                 if(!"auth".equals(refreshTokenClaims.get("type"))){
                     deleteToken(response);
@@ -59,12 +60,13 @@ public class AuthenticatedFilter implements HandlerInterceptor {
                     ResponseCookie newCookie = CookieUtils.CreateCookie("token", newToken);
                     CookieUtils.deleteCookie(response, "token");
                     response.setHeader("Set-Cookie", newCookie.toString());
+                    claims =  refreshTokenClaims;
                 }catch (Exception e){
                     System.out.println("Error in generating JWT");
                     throw new StatusFoundException("Error in refreshing session");
                 }
-
             }
+
 
             request.setAttribute("uid",claims.get("uid"));
             return true;

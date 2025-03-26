@@ -1,5 +1,6 @@
 package com.mnemos.backend.Service;
 
+import com.mnemos.backend.Entity.File;
 import com.mnemos.backend.Entity.User;
 import com.mnemos.backend.Exception.BadRequestException;
 import com.mnemos.backend.Exception.NotFoundException;
@@ -44,11 +45,16 @@ public class AuthService {
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
+
+        //create a new folder
+        File rootFolder = fileService.CreateRootFolder(user.getFirstname() + "'s", null, user);
+        user.setRootFolder(rootFolder.getId());
+
+        userRepository.save(user);
+
         ResponseCookie jwtCookie = CookieUtils.CreateCookie("token",jwtUtil.generateToken(user.getId().toString(), "auth"));
         ResponseCookie jwtRefreshCookie = CookieUtils.CreateCookie("refreshtoken",jwtUtil.generateRefreshToken(user.getId().toString(), "auth"));
 
-        //create a new folder
-        fileService.CreateFolder(user.getFirstname() + "'s", null, user, true);
 
 
         //send cookie

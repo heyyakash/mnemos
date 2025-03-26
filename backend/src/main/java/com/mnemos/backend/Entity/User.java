@@ -27,7 +27,17 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    private UUID rootFolder;
+
     private boolean verified = false;
+
+    public UUID getRootFolder() {
+        return rootFolder;
+    }
+
+    public void setRootFolder(UUID rootFolder) {
+        this.rootFolder = rootFolder;
+    }
 
     public String getEmail(){
         return this.email;

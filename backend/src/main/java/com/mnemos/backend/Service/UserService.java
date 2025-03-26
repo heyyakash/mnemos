@@ -1,6 +1,7 @@
 package com.mnemos.backend.Service;
 
 import com.mnemos.backend.Entity.User;
+import com.mnemos.backend.Exception.InternalServerErrorException;
 import com.mnemos.backend.Exception.NotFoundException;
 import com.mnemos.backend.Exception.StatusFoundException;
 import com.mnemos.backend.Repository.UserRepository;
@@ -25,19 +26,23 @@ public class UserService {
     private UserRepository userRepository;
 
     public ResponseEntity<?> getUserDetails(HttpServletRequest request, HttpServletResponse response){
-        String suid = request.getAttribute("uid").toString();
-        UUID uid = UUID.fromString(suid);
+        try {
+            String suid = request.getAttribute("uid").toString();
+            UUID uid = UUID.fromString(suid);
 
-        Optional<User> user = userRepository.findUserById(uid);
-        if(user.isEmpty()){
-            CookieUtils.deleteCookie(response, "token");
-            CookieUtils.deleteCookie(response, "refreshtoken");
-            throw new StatusFoundException("User Not Found");
+            Optional<User> user = userRepository.findUserById(uid);
+            if(user.isEmpty()){
+                CookieUtils.deleteCookie(response, "token");
+                CookieUtils.deleteCookie(response, "refreshtoken");
+                throw new StatusFoundException("User Not Found");
+            }
+            User userDetails = user.get();
+            userDetails.setPassword("");
+            return  ResponseEntity.ok((ResponseGenerator.generateResponse(HttpStatus.OK, userDetails, true)));
+        }catch (Exception e){
+            System.out.println(e);
+            throw new StatusFoundException("Error in getting user");
         }
-
-        User userDetails = user.get();
-        userDetails.setPassword("");
-        return  ResponseEntity.ok((ResponseGenerator.generateResponse(HttpStatus.OK, userDetails, true)));
     }
 
 }

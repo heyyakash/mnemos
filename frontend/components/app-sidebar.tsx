@@ -18,30 +18,74 @@ import { User } from "@/types/user.type";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Skeleton } from "./ui/skeleton";
+import { useAtom } from "jotai";
+import userAtom from "@/atoms/user.atom";
+import { useEffect } from "react";
+import { Folder } from "@/types/folder.type";
+import BreadCrumbAtom from "@/atoms/breadcrumb.atom";
 
 export function AppSidebar() {
   const router = useRouter();
+  const [user, setUser] = useAtom(userAtom)
+  const [, setBreadCrumb] = useAtom(BreadCrumbAtom)
+
+
+
   const getUserData = async () => {
     const data = await HTTPRequest("/user", {}, "GET");
-    console.log(data?.response.message);
+    if(data?.status === 302){
+      router.push("auth")
+      toast.error("Session expired")
+      return null
+    }
     return data?.response.message ?? null;
   };
+
+  const getFolderData = async () => {
+    const data = await HTTPRequest(`/file/folder_info/${user?.rootFolder}`, {}, "GET")
+    return data?.response.message ?? null
+  }
 
   const signOut = async () => {
     const data = await HTTPRequest("/auth/signout", {}, "POST");
     if (data?.response.success) {
+      setBreadCrumb([])
       toast.success(data?.response.message);
       router.push("/auth");
-    } else {
+    }     
+    else {
       toast.error(data?.response.message);
     }
   };
 
   const {
-    data: user,
+    data,
     isLoading,
     isError,
-  } = useQuery<User | null>({ queryKey: ["user"], queryFn: getUserData });
+  } = useQuery<User | null>({ queryKey: ["user"], queryFn: getUserData,});
+
+  const {
+    data: folderData,
+  } = useQuery<Folder | null>({
+    queryKey:["folder", user?.rootFolder],
+    queryFn: getFolderData,
+    enabled : !!user?.rootFolder
+  })
+
+
+  useEffect(()=>{
+    if(data){
+      setUser(data)
+      setBreadCrumb([])
+    }
+  },[data, setUser,setBreadCrumb])
+
+  useEffect(() => {
+    if(folderData){
+      setBreadCrumb((breadCrumb) => [...breadCrumb, folderData])
+    }
+  },[folderData, setBreadCrumb])
+
   const labels = [
     {
       name: "Script",

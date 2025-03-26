@@ -18,7 +18,10 @@ import { LayoutGrid, List } from "lucide-react";
 import { useAtom } from "jotai";
 import editorModeAtom from "@/atoms/editorMode.atom";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import CreateNew from "./CreateNew";
+import BreadcrumbComponent from "../Breadcrumb";
+import CreateNewFile from "./CreateNewFile";
+import { VscNewFolder } from "react-icons/vsc";
+import CreateNewFolder from "./CreateNewFolder";
 
 const Files = () => {
   const [mode, setMode] = useState<"list" | "grid">("list");
@@ -28,7 +31,7 @@ const Files = () => {
       <div className="p-4 flex items-center h-[80px] flex-row gap-4 border-b-2">
         <SidebarTrigger />
         <Separator className="-ml-2" orientation="vertical" />
-        <h3 className=" text-xl">/Root</h3>
+          <BreadcrumbComponent />
         <div className="ml-auto">
           <div className="bg-secondary grid grid-cols-2 p-1 rounded-md gap-2">
             <div
@@ -60,7 +63,20 @@ const Files = () => {
             </div>
           </SheetTrigger>
           <SheetContent className="w-[600px]">
-            <CreateNew />
+            <CreateNewFile />
+          </SheetContent>
+        </Sheet>
+        <Sheet>
+          <SheetTrigger asChild>
+            <div
+              onClick={() => setEditorMode(true)}
+              className="w-7 h-7 rounded-full text-2xl cursor-pointer hover:bg-secondary hover:text-primary font-semibold flex-hard-center self-center bg-primary text-secondary"
+            >
+              <VscNewFolder />
+            </div>
+          </SheetTrigger>
+          <SheetContent className="w-[600px]">
+            <CreateNewFolder />
           </SheetContent>
         </Sheet>
       </div>
