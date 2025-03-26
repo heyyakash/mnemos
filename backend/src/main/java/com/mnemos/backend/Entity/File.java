@@ -18,6 +18,13 @@ public class File {
     private String name;
 
     @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = true)
+    private String language;
+
+
+    @Column(nullable = false)
     private Boolean isFolder;
 
     @Column(nullable = false)
@@ -109,5 +116,22 @@ public class File {
 
     public void setRoot(Boolean root) {
         isRoot = root;
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

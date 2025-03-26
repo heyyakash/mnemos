@@ -14,30 +14,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class FileService {
     @Autowired
     private FileRepository fileRepository;
 
-    public File CreateFolder(String name, UUID parent_id, User user){
+    public File CreateFolder(String name, String description, UUID parent_id, User user){
         File folder = new File();
         folder.setName(name);
         folder.setFolder(true);
+        folder.setDescription(description);
         folder.setRoot(false);
         folder.setParent(parent_id!=null? fileRepository.findById(parent_id).orElse(null): null);
         folder.setOwner(user);
         return fileRepository.save(folder);
     }
 
-    public File CreateRootFolder(String name, UUID parent_id, User user){
+    public File CreateRootFolder(String name, String description,UUID parent_id, User user){
         File folder = new File();
         folder.setName(name);
         folder.setFolder(true);
+        folder.setDescription(description);
         folder.setRoot(true);
         folder.setParent(parent_id!=null? fileRepository.findById(parent_id).orElse(null): null);
         folder.setOwner(user);
@@ -78,15 +77,24 @@ public class FileService {
         fileRepository.deleteById(id);
     }
 
-    public Map<String, Object>[] retrieveFolderContents(HttpServletRequest request, String parent_id){
-        UUID parent_id = UUID.fromString(sid);
+    public  List<Map<String, Object>>  retrieveFolderContents(HttpServletRequest request, String sparent_id){
+        UUID parent_id = UUID.fromString(sparent_id);
         UUID uid = UUID.fromString(request.getAttribute("uid").toString());
 
-        Optional<File> folder = fileRepository.findFolderByIdandUID(id, uid);
-        if(folder.isEmpty()){
-            throw new NotFoundException("Unauthorized");
+        List<File> files = fileRepository.findFilesByFolderId(parent_id, uid);
+        List<Map<String, Object>> list = new ArrayList<>();
+        for(File file: files){
+            Map<String, Object> fileObject = new HashMap<>();
+            fileObject.put("name", file.getName());
+            fileObject.put("description", file.getDescription());
+            fileObject.put("createdAt", file.getCreatedAt());
+            fileObject.put("id", file.getId());
+            fileObject.put("language", file.getLanguage());
+            fileObject.put("isFolder", file.getFolder());
+            list.add(fileObject);
         }
 
+        return list;
 
     }
 

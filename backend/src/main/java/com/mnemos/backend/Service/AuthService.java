@@ -47,7 +47,7 @@ public class AuthService {
         userRepository.save(user);
 
         //create a new folder
-        File rootFolder = fileService.CreateRootFolder(user.getFirstname() + "'s", null, user);
+        File rootFolder = fileService.CreateRootFolder(user.getFirstname() + "'s","Root folder", null, user);
         user.setRootFolder(rootFolder.getId());
 
         userRepository.save(user);

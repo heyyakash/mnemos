@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,12 +41,13 @@ public class FileController {
         if(user.isEmpty()){
             throw new UnauthorizedException("Unauthorized");
         }
-        fileService.CreateFolder(body.get("name"), UUID.fromString(body.get("parent_id")), user.get());
+        fileService.CreateFolder(body.get("name"), body.get("description"), UUID.fromString(body.get("parent_id")), user.get());
         return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, "Folder created successfully", true));
     }
 
     @GetMapping("folder/contents/{id}")
     public ResponseEntity<?> getFolderContents(HttpServletRequest request, @PathVariable String id){
-
+        List<Map<String, Object>> response = fileService.retrieveFolderContents(request, id);
+        return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, response, true ));
     }
 }
