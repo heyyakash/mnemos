@@ -4,7 +4,7 @@ export interface File {
     description: string
     language: string | null
     snippet: {id: string} | null
-    createdAt: string
+    createdAt: number
     root: boolean
     folder: boolean
   }

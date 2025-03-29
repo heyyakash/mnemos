@@ -58,14 +58,8 @@ const FileList = () => {
         {files?.map((file, index) => {
           return (
             <FileCard
-              id = {file.id}
-              key={index}
-              mode={"list"}
-              title={file.name}
-              type={file.folder ? "folder" : "file"}
-              description={file.description}
-              language={file.language || ""}
-              updatedAt={file.createdAt}
+                key = {index}
+                file = {file}
             />
           );
         })}
