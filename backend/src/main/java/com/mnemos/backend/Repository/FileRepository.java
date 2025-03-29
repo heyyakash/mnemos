@@ -21,7 +21,11 @@ public interface FileRepository extends JpaRepository<File, UUID> {
     @Query(value = "SELECT * FROM files WHERE id = :id AND is_folder = TRUE AND owner_id = :owner_id", nativeQuery = true)
     Optional<File> findFolderByIdandUID(@Param("id") UUID id, @Param("owner_id") UUID ownerId);
 
-    @Query(value = "SELECT * FROM files WHERE parent_id = :parent_id AND is_folder = TRUE AND owner_id = :owner_id", nativeQuery = true)
+    @Query(value = "SELECT * FROM files WHERE id = :id  AND owner_id = :owner_id", nativeQuery = true)
+    Optional<File> findFileByIdandUID(@Param("id") UUID id, @Param("owner_id") UUID ownerId);
+
+
+    @Query(value = "SELECT * FROM files WHERE parent_id = :parent_id AND owner_id = :owner_id", nativeQuery = true)
     List<File> findFilesByFolderId(@Param("parent_id") UUID parent_id, @Param("owner_id") UUID ownerId);
 
 }

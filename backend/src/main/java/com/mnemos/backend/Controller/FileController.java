@@ -1,6 +1,7 @@
 package com.mnemos.backend.Controller;
 
 
+import com.mnemos.backend.Entity.File;
 import com.mnemos.backend.Entity.User;
 import com.mnemos.backend.Exception.UnauthorizedException;
 import com.mnemos.backend.Repository.UserRepository;
@@ -47,7 +48,7 @@ public class FileController {
 
     @GetMapping("folder/contents/{id}")
     public ResponseEntity<?> getFolderContents(HttpServletRequest request, @PathVariable String id){
-        List<Map<String, Object>> response = fileService.retrieveFolderContents(request, id);
+        List<File> response = fileService.retrieveFolderContents(request, id);
         return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, response, true ));
     }
 }

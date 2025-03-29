@@ -15,4 +15,7 @@ public interface SnippetRepository extends JpaRepository<Snippet, UUID> {
 
     Optional<Snippet[]> findSnippetByUid(String uid);
 
+    @Query(value = "SELECT * FROM snippets WHERE uid = :uid AND id = :id", nativeQuery = true)
+    Optional<Snippet> findSnippetByIdAndUid(@Param("id") UUID id, @Param("uid") String uid);
+
 }

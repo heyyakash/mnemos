@@ -2,15 +2,18 @@ import React from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
+  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { useAtom } from "jotai";
 import BreadCrumbAtom from "@/atoms/breadcrumb.atom";
 
 const BreadcrumbComponent = () => {
-  const [breadCrumb] = useAtom(BreadCrumbAtom);
+  const [breadCrumb, setBreadCrumb] = useAtom(BreadCrumbAtom);
+  const handleBreadCrumbClick = (i:number) => {
+    setBreadCrumb((breadCrumb) => breadCrumb.splice(0,i+1))
+  }
   return (
     <Breadcrumb>
       <BreadcrumbList className="text-lg">
@@ -18,7 +21,7 @@ const BreadcrumbComponent = () => {
           return (
             <div key={index} className="flex-center gap-2">
               <BreadcrumbItem>
-                <BreadcrumbLink>{link.name}</BreadcrumbLink>
+                <BreadcrumbPage onClick={()=>handleBreadCrumbClick(index)} className={`${index===breadCrumb.length-1? "text-primary":"text-primary/70"} hover:text-primary`}>{link.name}</BreadcrumbPage>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
             </div>

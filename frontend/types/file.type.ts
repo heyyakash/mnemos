@@ -1,9 +1,10 @@
 export interface File {
-    createdAt: string
-    isFolder: boolean
+    id: string
     name: string
     description: string
     language: string | null
-    id: string
+    snippet: {id: string} | null
+    createdAt: string
+    root: boolean
+    folder: boolean
   }
-  

@@ -43,9 +43,11 @@ public class FileService {
         return fileRepository.save(folder);
     }
 
-    public File createFile(String name, UUID parentId, Snippet snippet, User owner) {
+    public File createFile(String name ,String description, UUID parentId, Snippet snippet, String language ,User owner) {
         File file = new File();
         file.setName(name);
+        file.setLanguage(language);
+        file.setDescription(description);
         file.setFolder(false);
         file.setParent(parentId != null ? fileRepository.findById(parentId).orElse(null) : null);
         file.setSnippet(snippet);
@@ -56,7 +58,6 @@ public class FileService {
     public void retrieveRoot(HttpServletRequest request){
         String suid = request.getAttribute("uid").toString();
         UUID uuid = UUID.fromString(suid);
-
     }
 
     public Map<String, Object> retrieveFolderDetails(HttpServletRequest request, String sid){
@@ -77,25 +78,19 @@ public class FileService {
         fileRepository.deleteById(id);
     }
 
-    public  List<Map<String, Object>>  retrieveFolderContents(HttpServletRequest request, String sparent_id){
+    public  List<File>  retrieveFolderContents(HttpServletRequest request, String sparent_id){
         UUID parent_id = UUID.fromString(sparent_id);
         UUID uid = UUID.fromString(request.getAttribute("uid").toString());
 
         List<File> files = fileRepository.findFilesByFolderId(parent_id, uid);
-        List<Map<String, Object>> list = new ArrayList<>();
-        for(File file: files){
-            Map<String, Object> fileObject = new HashMap<>();
-            fileObject.put("name", file.getName());
-            fileObject.put("description", file.getDescription());
-            fileObject.put("createdAt", file.getCreatedAt());
-            fileObject.put("id", file.getId());
-            fileObject.put("language", file.getLanguage());
-            fileObject.put("isFolder", file.getFolder());
-            list.add(fileObject);
-        }
-
-        return list;
+        return files;
 
     }
+
+    public boolean doesFolderBelongToUser(UUID folder_id, UUID uid){
+        Optional<File> file = fileRepository.findFolderByIdandUID(folder_id,uid);
+        return file.isPresent();
+    }
+
 
 }

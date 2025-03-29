@@ -3,8 +3,11 @@ import { Braces, Folder } from "lucide-react";
 import React, { FC } from "react";
 import { Badge } from "../ui/badge";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { useAtom } from "jotai";
+import BreadCrumbAtom from "@/atoms/breadcrumb.atom";
 
 interface props {
+  id: string
   type: "file" | "folder";
   description: string;
   updatedAt: string;
@@ -13,7 +16,15 @@ interface props {
   mode?: "grid" | "list";
 }
 
-const FileCard: FC<props> = ({ type, title, language,description, mode }) => {
+const FileCard: FC<props> = ({ id,type, title, language,description, mode }) => {
+  const [,setBreadCrumb ] = useAtom(BreadCrumbAtom)
+
+  const clickBehaviour = () => {
+    if(type === "folder"){
+      setBreadCrumb((breadCrumb) => [...breadCrumb, {id, name:title}])
+    }
+  }
+
   if (mode === "grid") {
     return (
       <div className="border-2 w-full gap-4 p-4 flex flex-col">
@@ -34,7 +45,7 @@ const FileCard: FC<props> = ({ type, title, language,description, mode }) => {
     );
   }
   return (
-    <TableRow className="cursor-pointer">
+    <TableRow onClick={()=>clickBehaviour()} className="cursor-pointer">
       <TableCell className="font-medium">
         {type === "folder" ? <Folder className="text-xs text-orange-500 h-4" /> : <Braces className="text-xs text-blue-500 h-4" />}
       </TableCell>

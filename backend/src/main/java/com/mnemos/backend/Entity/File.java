@@ -1,5 +1,8 @@
 package com.mnemos.backend.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -25,24 +28,27 @@ public class File {
 
 
     @Column(nullable = false)
-    private Boolean isFolder;
+    private Boolean isFolder = false;
 
     @Column(nullable = false)
-    private Boolean isRoot;
+    private Boolean isRoot = false;
 
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private File parent;
 
     @ManyToOne
     @JoinColumn(name = "snippet_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIncludeProperties({"id"})
     private Snippet snippet;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private User owner;
 
     @Column(name = "created_at", nullable = false, updatable = false)
