@@ -6,6 +6,7 @@ import com.mnemos.backend.Entity.User;
 import com.mnemos.backend.Exception.InternalServerErrorException;
 import com.mnemos.backend.Exception.NotFoundException;
 import com.mnemos.backend.Exception.UnauthorizedException;
+import com.mnemos.backend.Repository.FileRepository;
 import com.mnemos.backend.Repository.SnippetRepository;
 import com.mnemos.backend.Utils.ResponseGenerator;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,6 +30,9 @@ public class SnippetService {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private FileRepository fileRepository;
 
     public Snippet getSnippet(HttpServletRequest request, UUID id){
         try{
@@ -72,17 +77,34 @@ public class SnippetService {
         return snippets.get().clone();
     }
 
-    public Snippet updateSnippet(UUID id, String title, String description, String code, String language){
+    public ResponseEntity<?> updateSnippet(UUID id, String title, String description, String code){
         Optional<Snippet> snippet = snippetRepository.findById(id);
-        if(snippet.isEmpty()){
+        Optional<File> file = fileRepository.findFileBySnippetId(id);
+        if(snippet.isEmpty() || file.isEmpty()){
             throw new NotFoundException("Snippet does not exist");
         }
+        File oldFile = file.get();
         Snippet oldSnip = snippet.get();
+
+        System.out.println("In the onUpdate");
+        if(oldSnip.getCode() != null && !oldSnip.getCode().equals(code)){
+            Map<String, Object> oldVersion = Map.of(
+                    "code", oldSnip.getCode(),
+                    "version", oldSnip.getVersion(),
+                    "updatedAt", oldSnip.getUpdatedAt()
+            );
+            oldSnip.setVersion(oldSnip.getVersion() + 1);
+            oldSnip.getHistory().add(oldVersion);
+        }
+        oldSnip.setUpdatedAt(System.currentTimeMillis() / 1000);
         oldSnip.setTitle(title);
+        oldFile.setName(title);
         oldSnip.setDescription(description);
+        oldFile.setDescription(description);
         oldSnip.setCode(code);
-        oldSnip.setLanguage(language);
-        return snippetRepository.save(oldSnip);
+        fileRepository.save(oldFile);
+        snippetRepository.save(oldSnip);
+        return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, "Snippet updated successfully", true));
     }
 
     public ResponseEntity<?> deleteSnippet(UUID id){

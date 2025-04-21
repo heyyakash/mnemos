@@ -57,22 +57,6 @@
             this.updatedAt = now;
         }
 
-
-        @PreUpdate
-        public void onUpdate() throws JsonProcessingException {
-            System.out.println("In the onUpdate");
-            Map<String, Object> oldVersion = Map.of(
-                    "code", this.code,
-                    "version", this.version,
-                    "language", this.language,
-                    "updatedAt", this.updatedAt
-            );
-            System.out.println(oldVersion);
-            history.add(oldVersion);
-            System.out.println(history);
-            this.version+=1;
-            this.updatedAt = System.currentTimeMillis() / 1000;
-        }
         public UUID getId() {
             return id;
         }

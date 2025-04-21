@@ -28,4 +28,6 @@ public interface FileRepository extends JpaRepository<File, UUID> {
     @Query(value = "SELECT * FROM files WHERE parent_id = :parent_id AND owner_id = :owner_id", nativeQuery = true)
     List<File> findFilesByFolderId(@Param("parent_id") UUID parent_id, @Param("owner_id") UUID ownerId);
 
+    Optional<File> findFileBySnippetId(UUID snippetId);
+
 }

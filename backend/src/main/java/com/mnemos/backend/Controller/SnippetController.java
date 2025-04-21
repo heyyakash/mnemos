@@ -49,9 +49,9 @@ public class SnippetController {
         return snippetService.getSnippetsByUid(request.get("uid"));
     }
 
-    @PutMapping("/update/{id}")
-    public Snippet updateSnippet(@PathVariable UUID id , @RequestBody Map<String, String> request){
-        return snippetService.updateSnippet(id, request.get("title"), request.get("description"), request.get("code"), request.get("language"));
+    @PutMapping("update/{id}")
+    public ResponseEntity<?> updateSnippet(@PathVariable UUID id , @RequestBody Map<String, String> request){
+        return snippetService.updateSnippet(id, request.get("title"), request.get("description"), request.get("snippet"));
     }
 
     @DeleteMapping("/delete/{id}")
