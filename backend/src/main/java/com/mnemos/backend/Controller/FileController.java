@@ -51,4 +51,10 @@ public class FileController {
         List<File> response = fileService.retrieveFolderContents(request, id);
         return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, response, true ));
     }
+
+    @DeleteMapping("{id}")
+    public  ResponseEntity<?> deleteFile(HttpServletRequest request, @PathVariable UUID id){
+        fileService.deleteFile(request, id);
+        return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, "Successfully Deleted", true));
+    }
 }

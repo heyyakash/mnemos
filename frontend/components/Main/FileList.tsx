@@ -52,6 +52,7 @@ const FileList = () => {
           <TableHead>Description</TableHead>
           <TableHead>Language</TableHead>
           <TableHead className="text-right">Created At</TableHead>
+          <TableHead></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

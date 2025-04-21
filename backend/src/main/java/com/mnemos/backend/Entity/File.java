@@ -39,9 +39,8 @@ public class File {
     @JsonIgnore
     private File parent;
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "snippet_id", referencedColumnName = "id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIncludeProperties({"id"})
     private Snippet snippet;
 

@@ -65,7 +65,7 @@ const CreateNewFile = () => {
 
     if(res?.response.success){
       toast.success(res.response.message)
-      queryClient.invalidateQueries({queryKey:["files", parent_id]})
+      queryClient.invalidateQueries({queryKey:["files"]})
     }else{
       toast.error(res?.response.message);
     }

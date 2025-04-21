@@ -92,5 +92,18 @@ public class FileService {
         return file.isPresent();
     }
 
+    public boolean doesFileBelongToUser(UUID id, UUID uid){
+        Optional<File> file = fileRepository.findFileByIdandUID(id,uid);
+        return file.isPresent();
+    }
+
+    public void deleteFile(HttpServletRequest request, UUID id){
+        UUID uid = UUID.fromString(request.getAttribute("uid").toString());
+        if(doesFileBelongToUser(id, uid)){
+            fileRepository.deleteById(id);
+        }else{
+            throw new NotFoundException("File not found");
+        }
+    }
 
 }

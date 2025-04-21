@@ -65,7 +65,7 @@ const Files = () => {
           <SheetTrigger asChild>
             <div
               onClick={() => setEditorMode(true)}
-              className="w-7 h-7 rounded-full text-2xl cursor-pointer hover:bg-secondary hover:text-primary font-semibold flex-hard-center self-center bg-primary text-secondary"
+              className="w-7 h-7 rounded-full text-2xl cursor-pointer hover:bg-secondary hover:text-primary font-semibold flex-hard-center self-center text-primary"
             >
               <VscNewFolder />
             </div>

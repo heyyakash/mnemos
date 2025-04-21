@@ -21,7 +21,7 @@ const BreadcrumbComponent = () => {
           return (
             <div key={index} className="flex-center gap-2">
               <BreadcrumbItem>
-                <BreadcrumbPage onClick={()=>handleBreadCrumbClick(index)} className={`${index===breadCrumb.length-1? "text-primary":"text-primary/70"} hover:text-primary`}>{link.name}</BreadcrumbPage>
+                <BreadcrumbPage onClick={()=>handleBreadCrumbClick(index)} className={`${index===breadCrumb.length-1? "text-primary":"text-primary/70"} hover:text-primary cursor-pointer`}>{link.name}</BreadcrumbPage>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
             </div>

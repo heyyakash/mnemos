@@ -28,31 +28,35 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const FormSchema = z.object({
   name: z.string({ required_error: "Title is required" }),
-  description : z.string({ required_error: "Title is required" })
+  description: z.string({ required_error: "Title is required" }),
 });
 
 const CreateNewFolder = () => {
-    const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const [breadCrumb] = useAtom(BreadCrumbAtom);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues:{
-        name:"",
-        description:""
-    }
+    defaultValues: {
+      name: "",
+      description: "",
+    },
   });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     const parent_id = breadCrumb[breadCrumb.length - 1].id;
-    const name = data.name
-    const description = data.description
+    const name = data.name;
+    const description = data.description;
 
-    const res = await HTTPRequest("/file/folder", {body : JSON.stringify({parent_id, name, description})},"POST")
-    if(res?.status===200){
-        toast.success(res.response.message)
-        queryClient.invalidateQueries({queryKey:["files"]})
-    }else{
-        toast.error(res?.response.message)
+    const res = await HTTPRequest(
+      "/file/folder",
+      { body: JSON.stringify({ parent_id, name, description }) },
+      "POST"
+    );
+    if (res?.status === 200) {
+      toast.success(res.response.message);
+      queryClient.invalidateQueries({ queryKey: ["files"] });
+    } else {
+      toast.error(res?.response.message);
     }
   };
 
@@ -103,7 +107,9 @@ const CreateNewFolder = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="mt-3">Create New Folder</Button>
+          <Button type="submit" className="mt-3">
+            Create New Folder
+          </Button>
         </form>
       </Form>
     </>
