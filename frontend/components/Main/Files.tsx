@@ -27,26 +27,7 @@ const Files = () => {
         <SidebarTrigger />
         <Separator className="-ml-2" orientation="vertical" />
         <BreadcrumbComponent />
-        {/* <div className="ml-auto">
-          <div className="bg-secondary grid grid-cols-2 p-1 rounded-md gap-2">
-            <div
-              className={`${
-                mode === "list" ? "bg-background" : ""
-              } p-1 px-2 cursor-pointer`}
-              onClick={() => setMode("list")}
-            >
-              <List height={20} />
-            </div>
-            <div
-              className={` ${
-                mode === "grid" ? "bg-background" : ""
-              } p-1 px-2 cursor-pointer`}
-              onClick={() => setMode("grid")}
-            >
-              <LayoutGrid height={20} />
-            </div>
-          </div>
-        </div> */}
+  
         <div className="ml-auto"></div>
         <Sheet>
           <SheetTrigger asChild>
