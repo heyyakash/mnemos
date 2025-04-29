@@ -126,6 +126,6 @@ body {
   }
 
   .form-label{
-    @apply ml-1 font-semibold;
+    @apply ml-1 text-zinc-300;
   }
 }

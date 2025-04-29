@@ -3,6 +3,7 @@
 import React from "react";
 import {
   SheetClose,
+  SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
@@ -28,18 +29,18 @@ import {
   SelectValue,
   SelectItem,
 } from "../ui/select";
-import { Textarea } from "../ui/textarea";
 import { useAtom } from "jotai";
 import BreadCrumbAtom from "@/atoms/breadcrumb.atom";
 import { HTTPRequest } from "@/api/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import CreateLabelForm from "../CreateLabelForm";
+import { Separator } from "../ui/separator";
+import { Code2 } from "lucide-react";
 
 const FormSchema = z.object({
-  title: z.string({ required_error: "Title is required" }),
-  language: z.string({ required_error: "Language Required" }),
-  snippet: z.string({ required_error: "Snippet required" }),
+  title: z.string().min(1, "Snippet Name is required"),
+  language: z.string().min(1, "Language is required"),
+  snippet: z.string().min(1, "Code is required"),
   label: z.string(),
 });
 
@@ -86,88 +87,130 @@ const CreateNewFile = () => {
 
   return (
     <>
-      <SheetHeader>
-        <SheetTitle>Add new Snippet</SheetTitle>
-        <SheetDescription>Add a new snippet</SheetDescription>
-        <SheetClose />
-      </SheetHeader>
+      <SheetContent className="w-full sm:max-w-md md:max-w-lg">
+        <SheetHeader>
+          <SheetTitle>Add new Snippet</SheetTitle>
+          <SheetDescription>
+            Save a code snippet for future reference.
+          </SheetDescription>
+          <SheetClose />
+        </SheetHeader>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem className="flex flex-col mt-5">
-                <FormLabel>Title</FormLabel>
-                <FormControl>
-                  <Input
-                    className="input-primary h-[40px] text-[1rem]"
-                    type="text"
-                    placeholder="Bash script"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="language"
-            render={({ field }) => (
-              <FormItem className="flex flex-col mt-3">
-                <FormLabel>Language</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem className="flex flex-col mt-5">
+                  <FormLabel className="form-label">Snippet Name</FormLabel>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a language" />
-                    </SelectTrigger>
+                    <Input
+                      className="input-primary h-[40px] text-[1rem]"
+                      type="text"
+                      placeholder="Add a descriptive name"
+                      {...field}
+                    />
                   </FormControl>
-                  <SelectContent>
-                    {languages.map((l, i) => {
-                      return (
-                        <SelectItem className="capitalize" key={i} value={l}>
-                          {l}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <CreateLabelForm />
+            <Separator className="my-6" />
 
-          <FormField
-            control={form.control}
-            name="snippet"
-            render={({ field }) => (
-              <FormItem className="flex flex-col mt-3">
-                <FormLabel>Snippet</FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="input-primary h-[140px] text-[1rem]"
-                    placeholder={`print("Hello World")`}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="language"
+              render={({ field }) => (
+                <FormItem className="flex flex-col mt-3">
+                  <FormLabel className="form-label">Language</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="input-primary">
+                        <SelectValue placeholder="Select a language" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {languages.map((l, i) => {
+                        return (
+                          <SelectItem className="capitalize" key={i} value={l}>
+                            {l}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <Button className="mt-2" type="submit">
-            Save
-          </Button>
-        </form>
-      </Form>
+            <FormField
+              control={form.control}
+              name="label"
+              render={({ field }) => (
+                <FormItem className="flex flex-col mt-6">
+                  <FormLabel className="form-label">Select a label</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="input-primary">
+                        <SelectValue placeholder="Select a language" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {languages.map((l, i) => {
+                        return (
+                          <SelectItem className="capitalize" key={i} value={l}>
+                            {l}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* <CreateLabelForm /> */}
+
+            <Separator className="my-6" />
+
+            <FormField
+              control={form.control}
+              name="snippet"
+              render={({ field }) => (
+                <FormItem className="flex flex-col mt-3">
+                  <FormLabel className="form-label">Code</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Code2 className="absolute left-3 top-3 h-5 w-5 text-zinc-500" />
+                      <textarea
+                        id="code"
+                        placeholder="Paste your code here..."
+                        className="flex min-h-32 w-full rounded-md border border-zinc-800 bg-zinc-900 px-10 py-3 text-sm text-zinc-100 font-mono placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-700 disabled:cursor-not-allowed disabled:opacity-50"
+                        {...field}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button className="my-6 w-full" type="submit">
+              Save
+            </Button>
+          </form>
+        </Form>
+      </SheetContent>
     </>
   );
 };

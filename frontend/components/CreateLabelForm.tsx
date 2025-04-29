@@ -43,8 +43,8 @@ const CreateLabelForm = () => {
   });
 
   const onSubmit = async () => {
-    const values = form.getValues(); // get current form values
-    const isValid = await form.trigger(); // validate manually
+    const values = form.getValues(); 
+    const isValid = await form.trigger(); 
 
     if (isValid) {
       console.log("Submitted Data:", values);

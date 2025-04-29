@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { SidebarTrigger } from "../ui/sidebar";
 import { Separator } from "../ui/separator";
 
-
 // import { LayoutGrid, List } from "lucide-react";
 import { useAtom } from "jotai";
 import editorModeAtom from "@/atoms/editorMode.atom";
@@ -16,10 +15,7 @@ import CreateNewFolder from "./CreateNewFolder";
 import FileList from "./FileList";
 
 const Files = () => {
-
-
-
-  const [mode, ] = useState<"list" | "grid">("list");
+  const [mode] = useState<"list" | "grid">("list");
   const [, setEditorMode] = useAtom(editorModeAtom);
   return (
     <div className="col-span-1  border-r">
@@ -27,7 +23,7 @@ const Files = () => {
         <SidebarTrigger />
         <Separator className="-ml-2" orientation="vertical" />
         <BreadcrumbComponent />
-  
+
         <div className="ml-auto"></div>
         <Sheet>
           <SheetTrigger asChild>
@@ -38,9 +34,7 @@ const Files = () => {
               +
             </div>
           </SheetTrigger>
-          <SheetContent className="w-[600px]">
-            <CreateNewFile />
-          </SheetContent>
+          <CreateNewFile />
         </Sheet>
         <Sheet>
           <SheetTrigger asChild>
@@ -61,7 +55,7 @@ const Files = () => {
           mode === "grid" ? "grid gap-2 grid-cols-4" : " flex flex-col gap-2"
         } p-2`}
       >
-          <FileList />
+        <FileList />
       </div>
     </div>
   );
