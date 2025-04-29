@@ -9,7 +9,6 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
 } from "@/components/ui/sidebar";
-import { Button } from "./ui/button";
 import SidebarCollapsible from "./sidebar/SidebarCollapsible";
 import { Archive, Home, Languages, Tag } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -23,68 +22,58 @@ import userAtom from "@/atoms/user.atom";
 import { useEffect } from "react";
 import { Folder } from "@/types/folder.type";
 import BreadCrumbAtom from "@/atoms/breadcrumb.atom";
+import Image from "next/image";
+import ProfileDropDown from "./sidebar/ProfileDropDown";
 
 export function AppSidebar() {
   const router = useRouter();
-  const [user, setUser] = useAtom(userAtom)
-  const [, setBreadCrumb] = useAtom(BreadCrumbAtom)
-
-
+  const [user, setUser] = useAtom(userAtom);
+  const [, setBreadCrumb] = useAtom(BreadCrumbAtom);
 
   const getUserData = async () => {
     const data = await HTTPRequest("/user", {}, "GET");
-    if(data?.status === 302){
-      router.push("auth")
-      toast.error("Session expired")
-      return null
+    if (data?.status === 302) {
+      router.push("auth");
+      toast.error("Session expired");
+      return null;
     }
     return data?.response.message ?? null;
   };
 
   const getFolderData = async () => {
-    const data = await HTTPRequest(`/file/folder_info/${user?.rootFolder}`, {}, "GET")
-    return data?.response.message ?? null
-  }
-
-  const signOut = async () => {
-    const data = await HTTPRequest("/auth/signout", {}, "POST");
-    if (data?.response.success) {
-      setBreadCrumb([])
-      toast.success(data?.response.message);
-      router.push("/auth");
-    }     
-    else {
-      toast.error(data?.response.message);
-    }
+    const data = await HTTPRequest(
+      `/file/folder_info/${user?.rootFolder}`,
+      {},
+      "GET"
+    );
+    return data?.response.message ?? null;
   };
 
-  const {
-    data,
-    isLoading,
-    isError,
-  } = useQuery<User | null>({ queryKey: ["user"], queryFn: getUserData,});
 
-  const {
-    data: folderData,
-  } = useQuery<Folder | null>({
-    queryKey:["folder", user?.rootFolder],
+
+  const { data, isLoading, isError } = useQuery<User | null>({
+    queryKey: ["user"],
+    queryFn: getUserData,
+  });
+
+  const { data: folderData } = useQuery<Folder | null>({
+    queryKey: ["folder", user?.rootFolder],
     queryFn: getFolderData,
-    enabled : !!user?.rootFolder
-  })
-
-
-  useEffect(()=>{
-    if(data){
-      setUser(data)
-      setBreadCrumb([])
-    }
-  },[data, setUser,setBreadCrumb])
+    enabled: !!user?.rootFolder,
+  });
 
   useEffect(() => {
-    if(folderData){
-      setBreadCrumb((breadCrumb) => [...breadCrumb, folderData])
+    if (data) {
+      setUser(data);
+      setBreadCrumb([]);
     }
-  },[folderData, setBreadCrumb])
+  }, [data, setUser, setBreadCrumb]);
+
+  useEffect(() => {
+    if (folderData) {
+      setBreadCrumb((breadCrumb) => [...breadCrumb, folderData]);
+    }
+  }, [folderData, setBreadCrumb]);
 
   const labels = [
     {
@@ -119,30 +108,33 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="p-4 flex items-center h-[80] flex-row gap-4 border-b-2">
-        {isLoading? (
-        <>
-          <div className="flex items-center space-x-4">
-            <Skeleton className="h-12 w-12 rounded-full" />
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-[250px]" />
-              <Skeleton className="h-4 w-[200px]" />
+        {isLoading ? (
+          <>
+            <div className="flex items-center space-x-4">
+              <Skeleton className="h-12 w-12 rounded-full" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-[250px]" />
+                <Skeleton className="h-4 w-[200px]" />
+              </div>
             </div>
-          </div>
-        </>
+          </>
         ) : (
-        <>
-          <div className="w-[50px] h-full bg-secondary flex items-center text-xl justify-center rounded-md">
+          <>
+            <Image src={"/light-logo.png"} width={40} height={40} alt="logo" />
+
+            {/* <div className="w-[50px] h-full bg-secondary flex items-center text-xl justify-center rounded-md">
             {(user && user?.firstname[0] + user?.lastname[0]) || "User"}
-          </div>
-          <div>
-            <h5 className="text-xl font-xl font-bold">
-              {" "}
-              {(user && user?.firstname + " " + user?.lastname) ||
-                "User"} &apos;s
-            </h5>
-            <p>Workspace</p>
-          </div>
-        </>
+          </div> */}
+            <div>
+              <h5 className="text-xl  font-semibold">
+                {" "}
+                {(user && user?.firstname + " " + user?.lastname) ||
+                  "User"}{" "}
+                &apos;s
+              </h5>
+              <p className="text-xs font-medium">Workspace</p>
+            </div>
+          </>
         )}
       </SidebarHeader>
       <SidebarContent>
@@ -165,10 +157,16 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="p-4">
-        <Button variant={"secondary"}>Settings</Button>
+        {/* <Button variant={"secondary"}>Settings</Button>
         <Button onClick={() => signOut()} variant={"destructive"}>
           Sign out
-        </Button>
+        </Button> */}
+        {/* <Popover>
+  <PopoverTrigger>Open</PopoverTrigger>
+  <PopoverContent>Place content for the popover here.</PopoverContent>
+</Popover> */}
+
+          <ProfileDropDown />
       </SidebarFooter>
     </Sidebar>
   );

@@ -34,42 +34,54 @@ import BreadCrumbAtom from "@/atoms/breadcrumb.atom";
 import { HTTPRequest } from "@/api/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import CreateLabelForm from "../CreateLabelForm";
 
 const FormSchema = z.object({
   title: z.string({ required_error: "Title is required" }),
   language: z.string({ required_error: "Language Required" }),
   snippet: z.string({ required_error: "Snippet required" }),
+  label: z.string(),
 });
 
 const CreateNewFile = () => {
-  const [breadCrumb, ] = useAtom(BreadCrumbAtom)
-  const queryClient = useQueryClient()
+  const [breadCrumb] = useAtom(BreadCrumbAtom);
+  const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues:{
-      "title":"",
-      "language":"",
-      "snippet":""
-    }
+    defaultValues: {
+      title: "",
+      language: "",
+      snippet: "",
+      label: "",
+    },
   });
 
   const languages = Object.values(Languages);
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    const {title: name, language, snippet} = data
-    const parent_id = breadCrumb[breadCrumb.length-1].id
+    const { title: name, language, snippet } = data;
+    const parent_id = breadCrumb[breadCrumb.length - 1].id;
 
-    const res = await HTTPRequest("/snippet/create", {
-      body: JSON.stringify({name,description :"test snippet" ,language, snippet, parent_id})
-    }, "POST")
+    const res = await HTTPRequest(
+      "/snippet/create",
+      {
+        body: JSON.stringify({
+          name,
+          description: "test snippet",
+          language,
+          snippet,
+          parent_id,
+        }),
+      },
+      "POST"
+    );
 
-    if(res?.response.success){
-      toast.success(res.response.message)
-      queryClient.invalidateQueries({queryKey:["files"]})
-    }else{
+    if (res?.response.success) {
+      toast.success(res.response.message);
+      queryClient.invalidateQueries({ queryKey: ["files"] });
+    } else {
       toast.error(res?.response.message);
     }
-
   };
 
   return (
@@ -131,6 +143,8 @@ const CreateNewFile = () => {
             )}
           />
 
+          <CreateLabelForm />
+
           <FormField
             control={form.control}
             name="snippet"
@@ -149,7 +163,9 @@ const CreateNewFile = () => {
             )}
           />
 
-          <Button className="mt-2" type = "submit">Save</Button>
+          <Button className="mt-2" type="submit">
+            Save
+          </Button>
         </form>
       </Form>
     </>

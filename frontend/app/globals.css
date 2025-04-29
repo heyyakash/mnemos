@@ -120,4 +120,12 @@ body {
   .flex-hard-center{
     @apply flex items-center justify-center;
   }
+
+  .input-primary{
+    @apply border-2 border-secondary bg-primary-foreground focus:border-primary rounded-sm  outline-none;
+  }
+
+  .form-label{
+    @apply ml-1 font-semibold;
+  }
 }

@@ -22,8 +22,8 @@ const Files = () => {
   const [mode, ] = useState<"list" | "grid">("list");
   const [, setEditorMode] = useAtom(editorModeAtom);
   return (
-    <div className="col-span-1  border-r-2">
-      <div className="p-4 flex items-center h-[80px] flex-row gap-4 border-b-2">
+    <div className="col-span-1  border-r">
+      <div className="p-4 flex items-center h-[80px] flex-row gap-4 border-b">
         <SidebarTrigger />
         <Separator className="-ml-2" orientation="vertical" />
         <BreadcrumbComponent />

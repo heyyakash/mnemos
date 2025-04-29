@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import docco from "react-syntax-highlighter/dist/esm/styles/hljs/agate";
@@ -51,7 +53,8 @@ const TimelineItem: React.FC<timelineItemProps> = ({
 };
 
 const Timeline: React.FC<props> = ({ history, language }) => {
-  const rev = history.reverse();
+  const rev = [...history].reverse()
+  console.log(rev)
   return (
     <div className="relative py-6">
       {rev.map((item, index) => (
