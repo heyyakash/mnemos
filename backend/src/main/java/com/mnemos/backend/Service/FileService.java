@@ -44,7 +44,7 @@ public class FileService {
         return fileRepository.save(folder);
     }
 
-    public File createFile(String name ,String description, UUID parentId, Snippet snippet, String language ,User owner) {
+    public File createFile(String name ,String description, UUID parentId, Snippet snippet, String language ,User owner,UUID label) {
         File file = new File();
         file.setName(name);
         file.setLanguage(language);
@@ -53,6 +53,11 @@ public class FileService {
         file.setParent(parentId != null ? fileRepository.findById(parentId).orElse(null) : null);
         file.setSnippet(snippet);
         file.setOwner(owner);
+        List<UUID> labels = new ArrayList<>();
+        if(label!=null){
+            labels.add(label);
+        }
+        file.setLabels(labels);
         return fileRepository.save(file);
     }
 

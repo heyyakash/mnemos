@@ -46,7 +46,7 @@ public class SnippetService {
         }
     }
 
-    public ResponseEntity<?> addSnippet(String title, String description, User user, String code, String language, String sparent_id){
+    public ResponseEntity<?> addSnippet(String title, String description, User user, String code, String language, String sparent_id, UUID label){
         try {
             UUID parent_id = UUID.fromString(sparent_id);
 
@@ -60,7 +60,7 @@ public class SnippetService {
             snippet.setTitle(title);
             snippet.setLanguage(language);
             Snippet snip = snippetRepository.save(snippet);
-            fileService.createFile(title, description, parent_id, snip, language, user );
+            fileService.createFile(title, description, parent_id, snip, language, user,label );
             System.out.println(snippet);
             return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, "Snippet saved successfully", true ));
         }catch (Exception e){

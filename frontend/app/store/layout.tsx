@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
+import Content from "@/components/Main/Content";
 import Main from "@/components/Main/main";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
@@ -18,7 +19,11 @@ export default function AuthLayout({
     <>
       <SidebarProvider>
         <AppSidebar />
+        
+        <div className="grid grid-cols-3  w-full">
         {children}
+          <Content />
+        </div>
         <Main />
       </SidebarProvider>
     </>

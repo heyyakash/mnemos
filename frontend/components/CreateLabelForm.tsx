@@ -22,6 +22,9 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { HTTPRequest } from "@/api/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const FormSchema = z.object({
   name: z
@@ -41,13 +44,25 @@ const CreateLabelForm = () => {
       colour: "#fff",
     },
   });
+  const queryClient = useQueryClient();
 
   const onSubmit = async () => {
-    const values = form.getValues(); 
-    const isValid = await form.trigger(); 
+    const values = form.getValues();
+    const isValid = await form.trigger();
 
     if (isValid) {
-      console.log("Submitted Data:", values);
+      const data = await HTTPRequest(
+        "/label/create",
+        { body: JSON.stringify({ name: values.name, colour: values.colour }) },
+        "POST"
+      );
+      if (data?.response.success) {
+        queryClient.invalidateQueries({ queryKey: ["labels"] });
+        toast.success("Label Created");
+      } else {
+        console.log(data?.response.message);
+        toast.error("Error in creating label");
+      }
     }
   };
 
@@ -127,9 +142,11 @@ const CreateLabelForm = () => {
                   Cancel
                 </button>
               </DialogClose>
-              <Button type="button" onClick={onSubmit} className="rounded-sm">
-                Create
-              </Button>
+              <DialogClose asChild>
+                <Button type="button" onClick={onSubmit} className="rounded-sm">
+                  Create
+                </Button>
+              </DialogClose>
             </div>
           </form>
         </Form>

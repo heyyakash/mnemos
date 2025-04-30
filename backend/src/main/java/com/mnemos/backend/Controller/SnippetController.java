@@ -41,7 +41,7 @@ public class SnippetController {
         if(user.isEmpty()){
             throw new UnauthorizedException("Unauthorized");
         }
-       return snippetService.addSnippet(body.get("name"), body.get("description"), user.get(), body.get("snippet"), body.get("language"), body.get("parent_id"));
+       return snippetService.addSnippet(body.get("name"), body.get("description"), user.get(), body.get("snippet"), body.get("language"), body.get("parent_id"), UUID.fromString(body.get("label")));
     }
 
     @PostMapping("/all")

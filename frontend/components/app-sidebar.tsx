@@ -10,7 +10,7 @@ import {
   SidebarMenu,
 } from "@/components/ui/sidebar";
 import SidebarCollapsible from "./sidebar/SidebarCollapsible";
-import { Archive, Home, Languages, Tag } from "lucide-react";
+import { Archive, Home, Languages } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { HTTPRequest } from "@/api/api";
 import { User } from "@/types/user.type";
@@ -24,6 +24,7 @@ import { Folder } from "@/types/folder.type";
 import BreadCrumbAtom from "@/atoms/breadcrumb.atom";
 import Image from "next/image";
 import ProfileDropDown from "./sidebar/ProfileDropDown";
+import Labels from "./sidebar/Labels";
 
 export function AppSidebar() {
   const router = useRouter();
@@ -75,34 +76,20 @@ export function AppSidebar() {
     }
   }, [folderData, setBreadCrumb]);
 
-  const labels = [
-    {
-      name: "Script",
-    },
-    {
-      name: "General",
-    },
-    {
-      name: "Web",
-    },
-    {
-      name: "cli",
-    },
-  ];
-  const language = [
-    {
-      name: "Python",
-    },
-    {
-      name: "Typescript",
-    },
-    {
-      name: "Java",
-    },
-    {
-      name: "Bash",
-    },
-  ];
+  // const language = [
+  //   {
+  //     name: "Python",
+  //   },
+  //   {
+  //     name: "Typescript",
+  //   },
+  //   {
+  //     name: "Java",
+  //   },
+  //   {
+  //     name: "Bash",
+  //   },
+  // ];
 
   if (isError) return <>Some Error</>;
   return (
@@ -147,11 +134,8 @@ export function AppSidebar() {
             <div className="w-full cursor-pointer p-2 flex items-center gap-2 text-md hover:bg-secondary rounded-sm">
               <Archive /> Archived
             </div>
-            <SidebarCollapsible title="Labels" list={labels}>
-              <Tag />
-            </SidebarCollapsible>
-            <SidebarCollapsible title="Languages" list={language}>
-              <Languages />
+            <Labels />
+            <SidebarCollapsible title="Languages" icon = {<Languages />}>
             </SidebarCollapsible>
           </SidebarMenu>
         </SidebarGroup>

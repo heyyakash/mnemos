@@ -32,10 +32,13 @@ import {
 import { useAtom } from "jotai";
 import BreadCrumbAtom from "@/atoms/breadcrumb.atom";
 import { HTTPRequest } from "@/api/api";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Separator } from "../ui/separator";
 import { Code2 } from "lucide-react";
+import CreateLabelForm from "../CreateLabelForm";
+import { fetchLabels } from "../sidebar/Labels";
+import { Label } from "@/types/label.type";
 
 const FormSchema = z.object({
   title: z.string().min(1, "Snippet Name is required"),
@@ -59,8 +62,10 @@ const CreateNewFile = () => {
 
   const languages = Object.values(Languages);
 
+  const {data: labels} = useQuery<Label[]>({queryKey:["labels"],queryFn:fetchLabels})
+
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    const { title: name, language, snippet } = data;
+    const { title: name, language, snippet,label } = data;
     const parent_id = breadCrumb[breadCrumb.length - 1].id;
 
     const res = await HTTPRequest(
@@ -71,6 +76,7 @@ const CreateNewFile = () => {
           description: "test snippet",
           language,
           snippet,
+          label,
           parent_id,
         }),
       },
@@ -155,25 +161,32 @@ const CreateNewFile = () => {
               render={({ field }) => (
                 <FormItem className="flex flex-col mt-6">
                   <FormLabel className="form-label">Select a label</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="input-primary">
-                        <SelectValue placeholder="Select a language" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {languages.map((l, i) => {
-                        return (
-                          <SelectItem className="capitalize" key={i} value={l}>
-                            {l}
-                          </SelectItem>
-                        );
-                      })}
-                    </SelectContent>
-                  </Select>
+                  <div className="flex-center gap-2">
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="input-primary">
+                          <SelectValue placeholder="Select a Label" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {labels?.map((l, i) => {
+                          return (
+                            <SelectItem
+                              className="capitalize"
+                              key={i}
+                              value={l.id}
+                            >
+                              {l.name}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+                   <CreateLabelForm />
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}

@@ -11,13 +11,13 @@ import {
 } from "@/components/ui/collapsible"
 
 interface props {
-  list : {name: string}[]
   title : string
   children?: React.ReactNode
+  icon: React.ReactNode
 }
 
 
-const SidebarCollapsible: React.FC<props> = ({list, title, children}) => {
+const SidebarCollapsible: React.FC<props> = ({ title, children, icon}) => {
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
@@ -28,7 +28,7 @@ const SidebarCollapsible: React.FC<props> = ({list, title, children}) => {
     >
       <div className="flex items-center justify-between p-2">
         <h4 className=" font-medium flex gap-2 items-center text-md">
-          {children}
+          {icon}
           {title}
         </h4>
         <CollapsibleTrigger asChild>
@@ -40,13 +40,7 @@ const SidebarCollapsible: React.FC<props> = ({list, title, children}) => {
       </div>
 
       <CollapsibleContent className="w-[95%] ml-auto">
-        {list.map((x) => {
-          return(
-            <div key = {x.name} className="rounded-sm my-1 border p-2 text-sm">
-              {x.name}
-          </div>
-          )
-        })}
+        {children}
       </CollapsibleContent>
     </Collapsible>
   )
