@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,6 +21,9 @@ public class File {
 
     @Column(nullable = false)
     private String name;
+
+
+    private List<UUID> labels = new ArrayList<>();
 
     @Column(nullable = false)
     private String description;
@@ -52,6 +57,9 @@ public class File {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Long createdAt;
+
+    @Column(name = "archived", nullable = false)
+    private boolean archived = false;
 
     @PrePersist
     protected void onCreate(){
@@ -138,5 +146,21 @@ public class File {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
+    public List<UUID> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<UUID> labels) {
+        this.labels = labels;
     }
 }

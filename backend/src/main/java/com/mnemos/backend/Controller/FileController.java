@@ -57,4 +57,10 @@ public class FileController {
         fileService.deleteFile(request, id);
         return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, "Successfully Deleted", true));
     }
+
+    @GetMapping("archive/{id}")
+    public ResponseEntity<?> archiveFile(HttpServletRequest request, @PathVariable UUID id){
+        fileService.archiveFile(request, id);
+        return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, "Successfully Archived", true));
+    }
 }

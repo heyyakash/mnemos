@@ -14,7 +14,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(authenticatedFilter)
-                .addPathPatterns("/user/**", "/file/**","/snippet/**")
+                .addPathPatterns("/user/**", "/file/**","/snippet/**","/label/**")
                 .excludePathPatterns("/api/auth/**");
     }
 }

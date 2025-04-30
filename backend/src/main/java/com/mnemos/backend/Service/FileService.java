@@ -4,6 +4,7 @@ package com.mnemos.backend.Service;
 import com.mnemos.backend.Entity.File;
 import com.mnemos.backend.Entity.Snippet;
 import com.mnemos.backend.Entity.User;
+import com.mnemos.backend.Exception.InternalServerErrorException;
 import com.mnemos.backend.Exception.NotFoundException;
 import com.mnemos.backend.Exception.UnauthorizedException;
 import com.mnemos.backend.Repository.FileRepository;
@@ -104,6 +105,19 @@ public class FileService {
         }else{
             throw new NotFoundException("File not found");
         }
+    }
+
+    public void archiveFile(HttpServletRequest request, UUID id){
+
+            UUID uid = UUID.fromString(request.getAttribute("uid").toString());
+            Optional<File> f = fileRepository.findFileBySnippetId(id);
+            if(f.isEmpty()){
+                throw new NotFoundException("File not found");
+            }
+            File file = f.get();
+            file.setArchived(true);
+            fileRepository.save(file);
+
     }
 
 }

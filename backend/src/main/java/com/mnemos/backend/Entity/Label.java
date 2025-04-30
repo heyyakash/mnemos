@@ -20,6 +20,10 @@ public class Label {
     @Column(nullable = false, updatable = false)
     private UUID createdBy;
 
+    @Column(nullable = false)
+    private String colour;
+
+
     private Long createdAt;
     private Long updatedAt;
 
@@ -68,5 +72,13 @@ public class Label {
 
     public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getColour() {
+        return colour;
+    }
+
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 }
