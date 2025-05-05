@@ -48,7 +48,7 @@ const EmailPassword = () => {
     );
     if (res?.response.success) {
       toast.success(res.response.message);
-      router.push("/store");
+      router.push("/store/home");
     } else {
       toast.error(res?.response.message);
     }

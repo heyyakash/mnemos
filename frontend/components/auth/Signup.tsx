@@ -66,7 +66,7 @@ const SignUp = () => {
                 email:"",
                 password:""
             })
-            router.push('/store')
+            router.push('/store/home')
         }else{
             toast.error(res?.response.message)
         }

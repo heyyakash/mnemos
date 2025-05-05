@@ -6,11 +6,10 @@ import { useQuery } from "@tanstack/react-query";
 import { HTTPRequest } from "@/api/api";
 import userAtom from "@/atoms/user.atom";
 import { useAtom } from "jotai";
+import Link from "next/link";
+import { Label } from "@/types/label.type";
 
-export interface labelResponseObject {
-    name: string,
-    colour: string
-}
+
 
 export const fetchLabels = async () => {
     const data = await HTTPRequest("/label/user", {}, "GET")
@@ -25,16 +24,16 @@ export const fetchLabels = async () => {
 const Labels = () => {
     const [user, ] = useAtom(userAtom);
     
-    const {data: labels} = useQuery<labelResponseObject[]>({queryKey:["labels"],queryFn:fetchLabels,  enabled : !!user})
+    const {data: labels} = useQuery<Label[]>({queryKey:["labels"],queryFn:fetchLabels,  enabled : !!user})
     console.log("labels ", labels)
     return (
     <SidebarCollapsible title="Labels" icon = {<Tag />}>
         {labels?.map((obj, key) => {
             return(
-                <div key = {key} className=" flex-center gap-2 pl-2 border-l-2 my-2 cursor-pointer">
+                <Link href = {`/store/label/${obj.id}`} key = {key} className=" flex-center gap-2 p-2 border-l-2 my-2 cursor-pointer hover:bg-background">
                     <span className={`w-3 h-3 rounded-full`} style={{backgroundColor:obj.colour}}></span>
                     {obj.name}
-                </div>
+                </Link>
             )
         })}
     </SidebarCollapsible>

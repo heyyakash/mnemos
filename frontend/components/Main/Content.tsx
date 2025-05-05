@@ -35,7 +35,7 @@ const Content = () => {
   };
 
   const { data, isLoading } = useQuery<Snippet | null>({
-    queryKey: ["snippet"],
+    queryKey: ["snippet", currentSnip],
     enabled: currentSnip !== null,
     queryFn: fetchSnip,
   });

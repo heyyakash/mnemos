@@ -25,6 +25,7 @@ import BreadCrumbAtom from "@/atoms/breadcrumb.atom";
 import Image from "next/image";
 import ProfileDropDown from "./sidebar/ProfileDropDown";
 import Labels from "./sidebar/Labels";
+import Link from "next/link";
 
 export function AppSidebar() {
   const router = useRouter();
@@ -34,7 +35,7 @@ export function AppSidebar() {
   const getUserData = async () => {
     const data = await HTTPRequest("/user", {}, "GET");
     if (data?.status === 302) {
-      router.push("auth");
+      router.push("/auth");
       toast.error("Session expired");
       return null;
     }
@@ -128,9 +129,9 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel>Platform</SidebarGroupLabel>
           <SidebarMenu>
-            <div className="w-full cursor-pointer p-2 flex items-center gap-2 text-md hover:bg-secondary rounded-sm">
+            <Link href = "/store/home" className="w-full cursor-pointer p-2 flex items-center gap-2 text-md hover:bg-secondary rounded-sm">
               <Home /> Home
-            </div>
+            </Link>
             <div className="w-full cursor-pointer p-2 flex items-center gap-2 text-md hover:bg-secondary rounded-sm">
               <Archive /> Archived
             </div>

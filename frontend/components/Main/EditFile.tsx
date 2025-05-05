@@ -24,6 +24,8 @@ import { Textarea } from "../ui/textarea";
 import { HTTPRequest } from "@/api/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useAtom } from "jotai";
+import currentSnippetAtom from "@/atoms/currentSnippet";
 
 const FormSchema = z.object({
   title: z.string({ required_error: "Title is required" }),
@@ -40,6 +42,7 @@ interface props {
 
 const EditFile: React.FC<props> = ({ title, id, description, snippet }) => {
   const queryClient = useQueryClient();
+  const [currentSnip, ] = useAtom(currentSnippetAtom)
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -77,7 +80,7 @@ const EditFile: React.FC<props> = ({ title, id, description, snippet }) => {
       onSuccess: () => {
         console.log("Success")
         queryClient.invalidateQueries({
-          queryKey: ["snippet"],
+          queryKey: ["snippet",currentSnip],
         });
       },
     });

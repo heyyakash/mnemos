@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import FileCard from "./FileCard";
 
 import {
@@ -9,37 +9,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import BreadCrumbAtom from "@/atoms/breadcrumb.atom";
-import { useQuery } from "@tanstack/react-query";
-import { HTTPRequest } from "@/api/api";
-import { toast } from "sonner";
 import { File } from "@/types/file.type";
-import { useAtom } from "jotai";
+interface props{
+  list: File[] | undefined | null
+  isLoading: boolean
+}
 
-const FileList = () => {
-  const [breadCrumb] = useAtom(BreadCrumbAtom);
-  const fetchFiles = async () => {
-    const res = await HTTPRequest(
-      `/file/folder/contents/${breadCrumb[breadCrumb.length - 1].id}`,
-      {},
-      "GET"
-    );
-    if (res?.status === 200) {
-      console.log(res.response.message);
-      return res.response.message;
-    } else {
-      toast.error(res?.response.message);
-      return null;
-    }
-  };
-  const { data: files, isLoading } = useQuery<File[] | null>({
-    queryKey: ["files", breadCrumb],
-    queryFn: fetchFiles,
-    enabled: !!breadCrumb?.length,
-  });
+const FileList:FC<props> = ({list, isLoading}) => {
+  
 
   if(isLoading){
     return <>Loading..</>
+  }
+
+  if(list === undefined || list === null){
+    return (
+      <div className="text-center">Folder is empty</div>
+    )
   }
   return (
     <>
@@ -56,7 +42,7 @@ const FileList = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {files?.map((file, index) => {
+        {list?.map((file, index) => {
           return (
             <FileCard
                 key = {index}
@@ -67,7 +53,7 @@ const FileList = () => {
 
       </TableBody>
     </Table>
-    {files?.length === 0 ? <div className="text-center">Folder is empty</div> : <></>}
+
     </>
   );
 };
