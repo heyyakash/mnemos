@@ -62,10 +62,13 @@ const CreateNewFile = () => {
 
   const languages = Object.values(Languages);
 
-  const {data: labels} = useQuery<Label[]>({queryKey:["labels"],queryFn:fetchLabels})
+  const { data: labels } = useQuery<Label[]>({
+    queryKey: ["labels"],
+    queryFn: fetchLabels,
+  });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    const { title: name, language, snippet,label } = data;
+    const { title: name, language, snippet, label } = data;
     const parent_id = breadCrumb[breadCrumb.length - 1].id;
 
     const res = await HTTPRequest(
@@ -89,6 +92,16 @@ const CreateNewFile = () => {
     } else {
       toast.error(res?.response.message);
     }
+    form.reset({
+      title: "",
+      language: "",
+      snippet: "",
+      label: "",
+    });
+    form.resetField("title");
+    form.resetField("language");
+    form.resetField("snippet");
+    form.resetField("label");
   };
 
   return (
@@ -185,7 +198,7 @@ const CreateNewFile = () => {
                         })}
                       </SelectContent>
                     </Select>
-                   <CreateLabelForm />
+                    <CreateLabelForm />
                   </div>
                   <FormMessage />
                 </FormItem>
