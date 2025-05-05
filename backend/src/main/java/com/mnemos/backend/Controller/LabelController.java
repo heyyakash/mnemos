@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("label")
@@ -29,6 +30,12 @@ public class LabelController {
     public ResponseEntity<?> getUserLabel(HttpServletRequest request){
         List<Label> labels = labelService.GetLabelByUser(request);
         return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, labels, true));
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<?> getLabelById(HttpServletRequest request, @PathVariable UUID id){
+        Label label = labelService.GetLabelById(request, id);
+        return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, label, true));
     }
 
 }

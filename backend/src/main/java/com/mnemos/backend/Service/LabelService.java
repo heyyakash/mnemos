@@ -2,6 +2,7 @@ package com.mnemos.backend.Service;
 
 
 import com.mnemos.backend.Entity.Label;
+import com.mnemos.backend.Exception.NotFoundException;
 import com.mnemos.backend.Repository.LabelRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,14 @@ public class LabelService {
         UUID createdBy =  UUID.fromString(request.getAttribute("uid").toString());
         Optional<List<Label>> labels = labelRepository.findLabelByCreatedBy(createdBy);
         return labels.get();
+    }
+
+    public Label GetLabelById(HttpServletRequest request, UUID id){
+        UUID uid  = UUID.fromString(request.getAttribute("uid").toString());
+        Optional<Label> oLabel = labelRepository.findLabelById(id);
+        if(oLabel.isEmpty()) throw new NotFoundException("Not found");
+        Label label = oLabel.get();
+        if(!label.getCreatedBy().equals(uid)) throw new NotFoundException("Not Found");
+        return label;
     }
 }

@@ -9,4 +9,6 @@ import java.util.UUID;
 
 public interface LabelRepository extends JpaRepository<Label, UUID> {
     Optional<List<Label>> findLabelByCreatedBy(UUID uid);
+
+    Optional<Label> findLabelById(UUID id);
 }

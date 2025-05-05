@@ -61,6 +61,11 @@ public class FileService {
         return fileRepository.save(file);
     }
 
+    public List<File> findFileByLabel(UUID labelId){
+        List<File> files = fileRepository.findByLabelId(labelId);
+        return files;
+    }
+
     public void retrieveRoot(HttpServletRequest request){
         String suid = request.getAttribute("uid").toString();
         UUID uuid = UUID.fromString(suid);

@@ -63,4 +63,11 @@ public class FileController {
         fileService.archiveFile(request, id);
         return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, "Successfully Archived", true));
     }
+
+    @GetMapping("label/{id}")
+    public ResponseEntity<?> filterBylabel(@PathVariable UUID id){
+        List<File> files = fileService.findFileByLabel(id);
+        return ResponseEntity.ok(ResponseGenerator.generateResponse(HttpStatus.OK, files, true));
+    }
+
 }

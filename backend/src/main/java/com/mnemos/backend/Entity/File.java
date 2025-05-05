@@ -23,6 +23,7 @@ public class File {
     private String name;
 
 
+    @Column(name  = "label", columnDefinition = "uuid[]")
     private List<UUID> labels = new ArrayList<>();
 
     @Column(nullable = false)
